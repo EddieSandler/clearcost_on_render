@@ -8,6 +8,7 @@ import HomePage from './HomePage'
 import SearchForm from './components/SearchForm';
 import NavBar from './components/Navbar';
 import TestForm from './components/TestForm';
+import RegistrationForm from './components/RegistrationForm';
 
 
 function App() {
@@ -16,9 +17,10 @@ function App() {
     <Router>
       <nav className="navBar">
         <Link to="/" className="navLink">Home</Link>
-        <Link to="/login" className="navLink"><button className="navButton">Login/Register</button></Link>
-        <Link to="/search" className="navLink"><button className="navButton">Search</button></Link>
-        <Link to="/test" className="navLink"><button className="navButton">Test</button></Link>
+        <Link to="/register" className="navLink"><button className="registerButton">Register</button></Link>
+        <Link to="/login" className="navlink"><button className="loginButton">Login</button></Link>
+        <Link to="/search" className="navlink"><button className="searchButton">Search</button></Link>
+        <Link to="/test" className="navlink"><button className="navButton">Test</button></Link>
       </nav>
 
     <div className="App">
@@ -26,6 +28,7 @@ function App() {
 
       <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/register" element={<RegistrationForm />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/search" element={<SearchForm />} />
       <Route path="/test" element={<TestForm />} />
