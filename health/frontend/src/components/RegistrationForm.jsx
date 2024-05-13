@@ -4,11 +4,37 @@ import { Button, TextField, Container, Typography, Box } from '@mui/material';
 function RegistrationForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleRegister = (event) => {
+    const handleRegister = async (event) => {
         event.preventDefault();
-        console.log('Registering:', { username, password });
-        // Here you would add the code to handle the registration logic
+
+        // Prepare data for the API call
+        const userData = {
+            username,
+            password,
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to register. Please try again.');
+            }
+
+            const data = await response.json();
+            console.log('Registration successful:', data);
+            // Handle post-registration logic here, e.g., redirect to login or dashboard
+        } catch (error) {
+            console.error('Registration error:', error);
+            setError(error.message);
+        }
     };
 
     return (
@@ -49,6 +75,11 @@ function RegistrationForm() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
+                    {error && (
+                        <Typography color="error">
+                            {error}
+                        </Typography>
+                    )}
                     <Button
                         type="submit"
                         fullWidth
