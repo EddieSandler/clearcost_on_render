@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Container, Typography, Box } from '@mui/material';
 
+
 function RegistrationForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
