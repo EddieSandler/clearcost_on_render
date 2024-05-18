@@ -30,7 +30,7 @@ function InsuranceForm({ onNext }) {
     return (
         <Container component="main" maxWidth="sm">
             <Paper style={{ padding: 20, marginTop: 10 }}>
-                <Typography component="h1" variant="h6">Insurance Information</Typography>
+                <Typography component="h1" variant="h6">Register</Typography>
                 <FormControl component="fieldset" style={{ margin: '20px 0' }}>
                     <FormLabel component="legend">Do you have insurance?</FormLabel>
                     <RadioGroup row name="insured" value={formData.insured} onChange={handleInputChange}>
