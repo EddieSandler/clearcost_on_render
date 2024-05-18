@@ -3,8 +3,8 @@ import axios from 'axios';
 
 function DataQueryForm() {
     const [inputs, setInputs] = useState({
-        procedure_id: '',
-        facility_id: ''
+        procedureId: '',
+        facilityId: ''
     });
     const [response, setResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +20,7 @@ function DataQueryForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!inputs.procedure_id || !inputs.facility_id) {
+        if (!inputs.procedureId || !inputs.facilityId) {
             setError('Both Procedure ID and Facility ID are required');
             return;
         }
@@ -29,8 +29,8 @@ function DataQueryForm() {
         try {
             const response = await axios.get('http://localhost:3000/search', {
                 params: {
-                    procedureId: inputs.procedure_id,
-                    planId: inputs.plan_id
+                    procedureId: inputs.procedureId,
+                    facilityId: inputs.facilityId
                 }
             });
             setResponse(response.data);
@@ -51,18 +51,18 @@ function DataQueryForm() {
                     Procedure ID:
                     <input
                         type="text"
-                        name="procedure_id"
-                        value={inputs.procedure_id}
+                        name="procedureId"
+                        value={inputs.procedureId}
                         onChange={handleChange}
                     />
                 </label>
                 <br />
                 <label>
-                    facility:
+                    Facility ID:
                     <input
                         type="text"
-                        name="facility_id"
-                        value={inputs.facility_id}
+                        name="facilityId"
+                        value={inputs.facilityId}
                         onChange={handleChange}
                     />
                 </label>
@@ -75,7 +75,7 @@ function DataQueryForm() {
             {response && (
                 <div>
                     <h2>Response</h2>
-                    <h2><pre>{JSON.stringify(response, null, 2)}</pre></h2>
+                    <pre>{JSON.stringify(response, null, 2)}</pre>
                 </div>
             )}
         </div>
