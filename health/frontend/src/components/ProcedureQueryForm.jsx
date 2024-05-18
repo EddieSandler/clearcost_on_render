@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Card, CardContent, Typography, Button, Grid, Checkbox, FormControlLabel } from '@mui/material';
 
 function ProcedureQueryForm() {
     const [procedureId, setProcedureId] = useState('');
-    const [response, setResponse] = useState(null);
+    const [response, setResponse] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [selectedCards, setSelectedCards] = useState([]);
 
     const handleChange = (e) => {
         setProcedureId(e.target.value);
@@ -20,33 +22,26 @@ function ProcedureQueryForm() {
         setError('');
         setIsLoading(true);
         try {
-            console.log(`Sending request with procedureId: ${procedureId}`);
             const result = await axios.get('http://localhost:3000/test', {
                 params: { procedureId }
             });
-            console.log('Received response:', result);
             setResponse(result.data);
         } catch (error) {
-            console.error('Error fetching data:', error);
             setError('Failed to fetch data');
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                console.error('Response data:', error.response.data);
-                console.error('Response status:', error.response.status);
-                console.error('Response headers:', error.response.headers);
-                setError(`Server responded with status ${error.response.status}: ${error.response.data.error}`);
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.error('Request data:', error.request);
-                setError('No response received from server');
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.error('Error message:', error.message);
-                setError('Error in setting up the request');
-            }
+            setResponse([]);
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleSelectCard = (id) => {
+        setSelectedCards(prevSelected => {
+            if (prevSelected.includes(id)) {
+                return prevSelected.filter(cardId => cardId !== id);
+            } else {
+                return [...prevSelected, id];
+            }
+        });
     };
 
     return (
@@ -63,15 +58,60 @@ function ProcedureQueryForm() {
                     />
                 </label>
                 <br />
-                <button type="submit" disabled={isLoading}>
+                <Button type="submit" variant="contained" color="primary" disabled={isLoading}>
                     {isLoading ? 'Loading...' : 'Submit'}
-                </button>
+                </Button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {response && (
-                <div>
-                    <h2>Response</h2>
-                    <pre>{JSON.stringify(response, null, 2)}</pre>
+            {error && <Typography color="error">{error}</Typography>}
+            <Grid container spacing={3} style={{ marginTop: '20px' }}>
+                {response.map((item) => (
+                    <Grid item xs={12} sm={6} md={4} key={item.facility_name}>
+                        <Card variant="outlined">
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    {item.procedure_name}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Facility: {item.facility_name}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Price: ${item.price}
+                                </Typography>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={selectedCards.includes(item.facility_name)}
+                                            onChange={() => handleSelectCard(item.facility_name)}
+                                        />
+                                    }
+                                    label="Select for Comparison"
+                                />
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+            {selectedCards.length > 1 && (
+                <div style={{ marginTop: '20px' }}>
+                    <Typography variant="h6">Comparison</Typography>
+                    {selectedCards.map((facilityName) => {
+                        const selectedFacility = response.find(item => item.facility_name === facilityName);
+                        return (
+                            <Card variant="outlined" key={facilityName} style={{ marginTop: '10px' }}>
+                                <CardContent>
+                                    <Typography variant="h5" component="div">
+                                        {selectedFacility.procedure_name}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Facility: {selectedFacility.facility_name}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Price: ${selectedFacility.price}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        );
+                    })}
                 </div>
             )}
         </div>
