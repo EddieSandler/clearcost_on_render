@@ -30,30 +30,34 @@ router.delete('/data/:id', (req, res) => {     //verifyToken, isAdmin,
 
 router.get('/search', async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
-  const { procedureId, planId } = req.query;  // Extract query parameters
+  const { procedureId, facilityId } = req.query;  // Extract query parameters
 
   try {
     const result = await db.query(`
-        SELECT
-            procedure.identifier_description AS "procedure",
-            price.price AS price,
-            facility.name AS facility,
-            plan.name AS plan,
-            payor.name AS payor
-        FROM procedure
-        JOIN price ON procedure.id = price.procedure_id
-        JOIN facility ON price.facility_id = facility.id
-        JOIN plan ON price.plan_id = plan.id
-        JOIN payor ON plan.payor_id = payor.id
-        WHERE procedure.id = $1 AND price.plan_id = $2;
-      `, [procedureId, planId]);
-    res.json(result.rows);
+    SELECT
+    procedures.description AS procedure_name,
+    pricing.price AS procedure_price,
+    facilities.facility_name
+  FROM
+    procedures
+  JOIN
+    pricing ON procedures.procedure_id = pricing.procedure_id
+  JOIN
+    facilities ON pricing.facility_id = facilities.facility_id
+  WHERE
+    facilities.facility_name = 'Medicare'
+  AND
+    procedures.description = 'Colonoscopy'
+`);
+    
 
+    res.json(result.rows);
 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
+
 
 });
 router.get('/test', async (req, res) => {

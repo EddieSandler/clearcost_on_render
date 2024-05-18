@@ -4,7 +4,7 @@ import axios from 'axios';
 function DataQueryForm() {
     const [inputs, setInputs] = useState({
         procedure_id: '',
-        plan_id: ''
+        facility_id: ''
     });
     const [response, setResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -20,8 +20,8 @@ function DataQueryForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!inputs.procedure_id || !inputs.plan_id) {
-            setError('Both Procedure ID and Plan ID are required');
+        if (!inputs.procedure_id || !inputs.facility_id) {
+            setError('Both Procedure ID and Facility ID are required');
             return;
         }
         setError('');
@@ -58,11 +58,11 @@ function DataQueryForm() {
                 </label>
                 <br />
                 <label>
-                    Plan ID:
+                    facility:
                     <input
                         type="text"
-                        name="plan_id"
-                        value={inputs.plan_id}
+                        name="facility_id"
+                        value={inputs.facility_id}
                         onChange={handleChange}
                     />
                 </label>
