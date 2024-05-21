@@ -15,7 +15,7 @@ import TestForm from './components/TestForm';
 import MainComponent from './components/MainComponent'; // Adjust the path based on your file structure
 import NewForm from './components/NewForm'
 import ProcedureQueryForm from './components/ProcedureQueryForm';
-
+import MyForm from './components/MyForm';
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
         {/* <Link to="/estimate" className="navlink"><button className="navButton">Estimate</button></Link> */}
         <Link to="/new" className="navlink"><button className="navButton">Pricing</button></Link>
         <Link to="/test" className="navlink"><button className="navButton">Test</button></Link>
-
+        <Link to="/compare" className="navlink"><button className="navButton">Compare</button></Link>
       </nav>
 
     <div className="App">
@@ -45,6 +45,7 @@ function App() {
       <Route path="/nav" element={<NavBar />} />
       <Route path="/Register" element={<MainComponent />} />
       <Route path="/new" element={<NewForm />} />
+      <Route path="/compare" element={<MyForm />} />
       </Routes>
     </div>
   </Router>
