@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button, Grid, Checkbox, FormControlLabel } from '@mui/material';
 
-function MyForm() {
+function PriceComparisonForm() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [result, setResult] = useState(null);
   const [selectedCards, setSelectedCards] = useState([]);
@@ -133,4 +133,4 @@ function MyForm() {
   );
 }
 
-export default MyForm;
+export default PriceComparisonForm
