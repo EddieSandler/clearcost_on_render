@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 
-const LoginForm = () => {
+const LoginForm = ({ handleLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3000/login', { email, password });
       if (response.status === 200) {
-        alert('Login successful!');
+        handleLogin();
+        navigate('/compare');
       } else {
         setError('Login failed');
       }

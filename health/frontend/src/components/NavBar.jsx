@@ -1,21 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../NavBar.css'
+import '../NavBar.css';
 
-
-const NavBar = ({ isRegister, toggleForm }) => {
+const NavBar = ({ isRegister, toggleForm, isLoggedIn, handleLogout }) => {
   return (
     <nav className="navBar">
       <Link to="/" className="navLink">Home</Link>
-      <Link to="/compare" className="navLink"><button className="navButton">Compare</button></Link>
       <div className="navRight">
-        <Link to="/auth" className="navLink"><button className="navButton">Sign Up / Sign In</button></Link>
-        <button onClick={toggleForm} className="toggleButton">
-          {isRegister ? 'Login' : 'Register'}
-        </button>
+        {isLoggedIn ? (
+          <button onClick={handleLogout} className="toggleButton">
+            Log Out
+          </button>
+        ) : (
+          <Link to="/auth" className="navLink">
+            <button onClick={toggleForm} className="toggleButton">
+              Login
+            </button>
+          </Link>
+        )}
       </div>
     </nav>
   );
-}
+};
 
 export default NavBar;

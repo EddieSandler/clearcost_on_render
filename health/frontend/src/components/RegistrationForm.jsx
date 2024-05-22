@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
-import bcrypt from 'bcryptjs';
 
 const RegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +16,14 @@ const RegistrationForm = () => {
       setError("Passwords don't match");
       return;
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
-      await axios.post('http://localhost:3000/register', { email, password: hashedPassword });
-      alert('Registration successful!');
+      const response = await axios.post('http://localhost:3000/register', { email, password });
+      if (response.status === 200) {
+        navigate('/compare');
+      } else {
+        setError('Registration failed');
+      }
     } catch (error) {
       setError('Registration failed');
     }

@@ -3,10 +3,14 @@ import { Container, Typography, Link } from '@mui/material';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 
-const Auth = ({ isRegister, toggleForm }) => {
+const Auth = ({ isRegister, toggleForm, handleLogin }) => {
   return (
     <Container>
-      {isRegister ? <RegistrationForm /> : <LoginForm />}
+      {isRegister ? (
+        <RegistrationForm />
+      ) : (
+        <LoginForm handleLogin={handleLogin} />
+      )}
       <Typography variant="body2" align="center" style={{ marginTop: '10px' }}>
         {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
         <Link component="button" onClick={toggleForm} style={{ cursor: 'pointer' }}>
