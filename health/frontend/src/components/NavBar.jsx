@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './NavBar.css';
+import './NavBar.css'; // Ensure this import is here
 
-const NavBar = ({ isRegister, toggleForm, isLoggedIn, handleLogout }) => {
+const NavBar = ({ isLoggedIn, handleLogout, showLoginForm, currentPath }) => {
   const navigate = useNavigate();
 
   const logout = () => {
@@ -12,15 +12,17 @@ const NavBar = ({ isRegister, toggleForm, isLoggedIn, handleLogout }) => {
 
   return (
     <nav className="navBar">
-      <Link to="/" className="navLink">Home</Link>
+      <Link to="/" className="navLink" style={{ pointerEvents: currentPath === '/compare' ? 'none' : 'auto', color: currentPath === '/compare' ? 'gray' : 'inherit' }}>
+        Home
+      </Link>
       <div className="navRight">
         {isLoggedIn ? (
           <button onClick={logout} className="toggleButton">
             Log Out
           </button>
         ) : (
-          <Link to="/auth" className="navLink">
-            <button onClick={toggleForm} className="toggleButton">
+          <Link to="/auth" className="navLink" onClick={showLoginForm}>
+            <button className="toggleButton">
               Login
             </button>
           </Link>

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
-import { Card, CardContent, Typography, Grid, Checkbox, FormControlLabel, Container } from '@mui/material';
-import '../PriceComparisonForm.css'; // Import the CSS file
+import { Card, CardContent, Typography, Grid, Checkbox, FormControlLabel, Container, Button } from '@mui/material';
+import './PriceComparisonForm.css'; // Import the CSS file
 
 function PriceComparisonForm() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -51,17 +51,26 @@ function PriceComparisonForm() {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    } else {
+      setSelectedOption(null);
+      setResult(null);
     }
   };
 
-  const handleSelectCard = (id) => {
+  const handleSelectCard = (facilityName) => {
     setSelectedCards(prevSelected => {
-      if (prevSelected.includes(id)) {
-        return prevSelected.filter(cardId => cardId !== id);
+      if (prevSelected.includes(facilityName)) {
+        return prevSelected.filter(name => name !== facilityName);
       } else {
-        return [...prevSelected, id];
+        return [...prevSelected, facilityName];
       }
     });
+  };
+
+  const clearSelection = () => {
+    setSelectedOption(null);
+    setResult(null);
+    setSelectedCards([]);
   };
 
   return (
@@ -77,6 +86,7 @@ function PriceComparisonForm() {
           renderInput={(params) => <TextField {...params} label="Choose an option" />}
           style={{ width: 300 }}
           onChange={handleOptionChange}
+          value={selectedOption}
         />
 
         <Grid container spacing={3} style={{ marginTop: '20px' }}>
@@ -108,7 +118,7 @@ function PriceComparisonForm() {
           ))}
         </Grid>
 
-        {selectedCards.length > 1 && (
+        {selectedCards.length > 0 && (
           <div style={{ marginTop: '20px' }}>
             <Typography variant="h6">Comparison</Typography>
             {selectedCards.map((facilityName) => {
@@ -130,6 +140,12 @@ function PriceComparisonForm() {
               );
             })}
           </div>
+        )}
+
+        {(selectedOption || selectedCards.length > 0) && (
+          <Button variant="contained" color="secondary" onClick={clearSelection} style={{ marginTop: '20px' }}>
+            Clear Selection
+          </Button>
         )}
       </Container>
     </div>

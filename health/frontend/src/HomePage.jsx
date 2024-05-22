@@ -11,7 +11,7 @@ const HomePage = () => {
         <Typography variant="h2" gutterBottom>Empowering Healthcare decisionmaking Through Transparent Pricing</Typography>
         <Link to="/auth" style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="primary" style={{ marginRight: '10px' }}>
-            Sign Up / Sign In
+            Login / Register
           </Button>
         </Link>
       </Container>
