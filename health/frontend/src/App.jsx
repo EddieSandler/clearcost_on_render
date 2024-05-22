@@ -1,42 +1,33 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-import logo from '/logo.webp'
-import './App.css'
-import './Nav.css'
-import RegistrationForm from './components/RegistrationForm'
-import  LoginForm from './components/LoginForm'
-import HomePage from './HomePage'
-import SearchForm from './components/SearchForm';
-import NavBar from './components/Navbar';
+import './App.css';
+import './NavBar.css';
+import HomePage from './HomePage';
 import PriceComparisonForm from './components/PriceComparisonForm';
-import InsuranceForm from './components/RegisterForm';
+import Auth from './components/Auth';
+import NavBar from './components/NavBar';
 
 function App() {
+  const [isRegister, setIsRegister] = useState(true);
+
+  const toggleForm = () => {
+    setIsRegister(!isRegister);
+  };
+
   return (
-
     <Router>
-      <nav className="navBar">
-        <Link to="/" className="navLink">Home</Link>
-        <Link to="/register" className="navLink"><button className="registerButton">Register</button></Link>
-        <Link to="/login" className="navlink"><button className="loginButton">Login</button></Link>
-        <Link to="/compare" className="navlink"><button className="navButton">Compare</button></Link>
-      </nav>
-
-    <div className="App">
-
-
-      <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/register" element={<InsuranceForm />} />
-      <Route path="/login" element={<LoginForm />} />
-      <Route path="/compare" element={<PriceComparisonForm />} />
-      </Routes>
-    </div>
-  </Router>
-  )
+      <NavBar isRegister={isRegister} toggleForm={toggleForm} />
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/auth" element={<Auth isRegister={isRegister} toggleForm={toggleForm} />} />
+          <Route path="/compare" element={<PriceComparisonForm />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;

@@ -1,14 +1,22 @@
 import React from 'react';
-import './HomePage.css'
+import { Link } from 'react-router-dom';
+import { Button, Container, Typography } from '@mui/material';
+import './HomePage.css'; // Assuming you have the CSS file
 
-
-function HomePage() {
+const HomePage = () => {
   return (
-    <div className='homePage'>
-      <h1>ClearCost Health</h1>
-      <h2> Empowering Healthcare Decisions Through Transparent Pricing</h2>
+    <div className="homePage">
+      <Container>
+        <Typography variant="h1" gutterBottom>ClearCost Health</Typography>
+        <Typography variant="h2" gutterBottom>Empowering Healthcare decisionmaking Through Transparent Pricing</Typography>
+        <Link to="/auth" style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="primary" style={{ marginRight: '10px' }}>
+            Sign Up / Sign In
+          </Button>
+        </Link>
+      </Container>
     </div>
   );
-}
+};
 
 export default HomePage;

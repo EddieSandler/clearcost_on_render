@@ -1,30 +1,52 @@
-import React from 'react';
-import { TextField, Button } from '@mui/material';
-import '../App.css'
+import React, { useState } from 'react';
+import { TextField, Button, Typography } from '@mui/material';
+import axios from 'axios';
 
-function LoginForm() {
+const LoginForm = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3000/login', { email, password });
+      if (response.status === 200) {
+        alert('Login successful!');
+      } else {
+        setError('Login failed');
+      }
+    } catch (error) {
+      setError('Login failed');
+    }
+  };
+
   return (
-
-    <div className="login">
-      <h1>Login</h1>
-      <TextField
-        label="Username"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Password"
-        type="password"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-      />
-      <Button variant="contained" color="primary" fullWidth>
-        Login
-      </Button>
-    </div>
+    <>
+      <Typography variant="h4" gutterBottom>Login</Typography>
+      {error && <Typography color="error">{error}</Typography>}
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Email"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button type="submit" variant="contained" color="primary">Login</Button>
+      </form>
+    </>
   );
-}
+};
 
 export default LoginForm;

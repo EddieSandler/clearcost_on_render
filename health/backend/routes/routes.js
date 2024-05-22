@@ -5,8 +5,13 @@ const cors = require('cors');
 
 router.use(cors());
 
-router.get('/user', (req, res) => {
-  res.send("this endpoint will retrieve a user's profile");
+router.post('/login', (req, res) => {
+  console.log('login endpoint works dude!')
+  res.send("login successful");
+});
+router.post('/register', (req, res) => {
+  console.log('register endpoint works dude!')
+  res.send("register successful");
 });
 
 router.post('/data', (req, res) => {
@@ -114,6 +119,7 @@ router.get('/test', async (req, res) => {
 router.get('/compare', async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { procedureId } = req.query;
+  console.log('Comparison endpoint works Dude!')
 
   if (!procedureId || isNaN(parseInt(procedureId))) {
     return res.status(400).json({ error: "Invalid or missing procedureId" });

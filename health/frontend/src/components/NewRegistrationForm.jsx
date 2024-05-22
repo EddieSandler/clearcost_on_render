@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography } from '@mui/material';
+import { TextField, Button, Container, Typography } from '@mui/material';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
-const RegistrationForm = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,7 +25,7 @@ const RegistrationForm = () => {
   };
 
   return (
-    <>
+    <Container>
       <Typography variant="h4" gutterBottom>Register</Typography>
       {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
@@ -57,8 +57,8 @@ const RegistrationForm = () => {
         />
         <Button type="submit" variant="contained" color="primary">Register</Button>
       </form>
-    </>
+    </Container>
   );
 };
 
-export default RegistrationForm;
+export default Register;
