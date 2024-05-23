@@ -41,9 +41,9 @@ const RegistrationForm = ({ handleLogin }) => {
         username,
         password,
         insuranceCompany,
-        copayment,
-        coinsurance,
-        deductible
+        copayment:copayment ||null,
+        coinsurance:coinsurance||null,
+        deductible:deductible||null
       });
       if (response.status === 200) {
         handleLogin(); // Call handleLogin to navigate to the comparison page
