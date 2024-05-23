@@ -5,7 +5,7 @@ import axios from 'axios';
 import './PriceComparisonForm.css'; // Ensure this CSS file is imported
 
 const RegistrationForm = () => {
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [insuranceCompany, setInsuranceCompany] = useState('');
@@ -24,7 +24,7 @@ const RegistrationForm = () => {
 
     try {
       const response = await axios.post('http://localhost:3000/register', {
-        email,
+        userName,
         password,
         insuranceCompany,
         copayment,
@@ -47,12 +47,12 @@ const RegistrationForm = () => {
       {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
         <TextField
-          label={<span className="dark-label">Email</span>}
+          label={<span className="dark-label">User Name</span>}
           variant="outlined"
           fullWidth
           margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
         />
         <TextField
           label={<span className="dark-label">Password</span>}
