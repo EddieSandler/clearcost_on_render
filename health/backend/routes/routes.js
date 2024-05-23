@@ -5,6 +5,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
+const authenticateToken = require('../middleWare/auth.js');
 
 router.use(cors());
 
@@ -32,7 +33,7 @@ router.post('/login', async (req, res) => {
       coinsurance: user.coinsurance,
       deductible: user.deductible
     }, SECRET_KEY, { expiresIn: '1h' });
-    
+
     console.log('login successful, token:', token);
     return res.json({ message: 'Login successful', token });
 
