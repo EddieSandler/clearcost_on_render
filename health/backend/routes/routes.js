@@ -10,7 +10,8 @@ router.post('/login', (req, res) => {
   res.send("login successful");
 });
 router.post('/register', (req, res) => {
-  console.log('register endpoint works dude!')
+  const { username, password, insuranceCompany, copayment, coinsurance, deductible } = req.body;
+  console.log('register endpoint works dude!',req.body)
   res.send("register successful");
 });
 
