@@ -6,11 +6,38 @@ const bcrypt = require('bcrypt');
 
 router.use(cors());
 
-router.post('/login', (req, res) => {
-  console.log('login endpoint works dude!')
-  res.send("login successful");
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const result = await db.query(`SELECT * FROM users where username = $1`, [username]);
+    if (result.rows.length === 0) {
+      return res.status(400).send('User not found');
+    }
+    const user=result.rows[0]
+    const isMatch=await bcrypt.compare(password,user.password_hash);
+
+    if(!isMatch){
+      return res.status(400).send('Invalid Crredentials')
+
+    }
+    res.status(200).send('Login successful');
+
+  } catch (err) {
+    console.error('Login Error:',err)
+    res.status(500).send('Error logging in')
+
+  }
+
+
+
 });
-router.post('/register',async (req, res) => {
+
+
+
+
+
+router.post('/register', async (req, res) => {
   const { username, password, insuranceCompany, copayment, coinsurance, deductible } = req.body;
   try {
     const password_hash = await bcrypt.hash(password, 10); // Hash the password
@@ -133,7 +160,7 @@ router.get('/test', async (req, res) => {
 router.get('/compare', async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { procedureId } = req.query;
-  console.log('Comparison endpoint works Dude!')
+  console.log('Comparison endpoint works Dude!');
 
   if (!procedureId || isNaN(parseInt(procedureId))) {
     return res.status(400).json({ error: "Invalid or missing procedureId" });
