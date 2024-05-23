@@ -74,20 +74,22 @@ function PriceComparisonForm() {
   };
 
   return (
-    <div className="priceComparisonForm">
+    <div className="fullscreen-background">
       <Container className="formContainer">
         <Typography variant="h4" gutterBottom>Price Comparison</Typography>
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={options}
-          getOptionLabel={(option) => option.label}
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-          renderInput={(params) => <TextField {...params} label="Choose an option" />}
-          style={{ width: 300 }}
-          onChange={handleOptionChange}
-          value={selectedOption}
-        />
+        <div className="autocomplete-container">
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={options}
+            getOptionLabel={(option) => option.label}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            renderInput={(params) => <TextField {...params} label="Choose an option" />}
+            style={{ width: 300 }}
+            onChange={handleOptionChange}
+            value={selectedOption}
+          />
+        </div>
 
         <Grid container spacing={3} style={{ marginTop: '20px' }}>
           {result && result.map((item) => (

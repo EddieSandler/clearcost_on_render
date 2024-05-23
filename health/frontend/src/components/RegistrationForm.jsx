@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
+import './PriceComparisonForm.css'; // Ensure this CSS file is imported
 
 const RegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [insuranceCompany, setInsuranceCompany] = useState('');
+  const [copayment, setCopayment] = useState('');
+  const [coinsurance, setCoinsurance] = useState('');
+  const [deductible, setDeductible] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -18,7 +23,14 @@ const RegistrationForm = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/register', { email, password });
+      const response = await axios.post('http://localhost:3000/register', {
+        email,
+        password,
+        insuranceCompany,
+        copayment,
+        coinsurance,
+        deductible
+      });
       if (response.status === 200) {
         navigate('/compare');
       } else {
@@ -35,7 +47,7 @@ const RegistrationForm = () => {
       {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Email"
+          label={<span className="dark-label">Email</span>}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -43,7 +55,7 @@ const RegistrationForm = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <TextField
-          label="Password"
+          label={<span className="dark-label">Password</span>}
           type="password"
           variant="outlined"
           fullWidth
@@ -52,13 +64,45 @@ const RegistrationForm = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <TextField
-          label="Confirm Password"
+          label={<span className="dark-label">Confirm Password</span>}
           type="password"
           variant="outlined"
           fullWidth
           margin="normal"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <TextField
+          label={<span className="dark-label">Insurance Company</span>}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={insuranceCompany}
+          onChange={(e) => setInsuranceCompany(e.target.value)}
+        />
+        <TextField
+          label={<span className="dark-label">Copayment %</span>}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={copayment}
+          onChange={(e) => setCopayment(e.target.value)}
+        />
+        <TextField
+          label={<span className="dark-label">Co-insurance ($ or %)</span>}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={coinsurance}
+          onChange={(e) => setCoinsurance(e.target.value)}
+        />
+        <TextField
+          label={<span className="dark-label">Deductible ($)</span>}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={deductible}
+          onChange={(e) => setDeductible(e.target.value)}
         />
         <Button type="submit" variant="contained" color="primary">Register</Button>
       </form>
