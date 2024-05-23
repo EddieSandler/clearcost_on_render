@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 router.use(cors());
 
@@ -9,10 +10,22 @@ router.post('/login', (req, res) => {
   console.log('login endpoint works dude!')
   res.send("login successful");
 });
-router.post('/register', (req, res) => {
+router.post('/register',async (req, res) => {
   const { username, password, insuranceCompany, copayment, coinsurance, deductible } = req.body;
-  console.log('register endpoint works dude!',req.body)
-  res.send("register successful");
+  try {
+    const password_hash = await bcrypt.hash(password, 10); // Hash the password
+    const result = await db.query(
+      'INSERT INTO users (username, password_hash, insurance_company, copayment, coinsurance, deductible) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [username, password_hash, insuranceCompany, copayment, coinsurance, deductible]
+    );
+
+    res.status(200).send(result.rows[0]);
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).send('Error registering user');
+  }
+
+
 });
 
 router.post('/data', (req, res) => {
