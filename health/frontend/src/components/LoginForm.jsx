@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography } from '@mui/material';
+import { TextField, Button, Typography, Container } from '@mui/material';
 import axios from 'axios';
+import './PriceComparisonForm.css'; // Ensure this CSS file is imported
 
 const LoginForm = ({ handleLogin }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:3000/login', { email, password });
+      const response = await axios.post('http://localhost:3000/login', { username, password });
       if (response.status === 200) {
-        handleLogin();
+        handleLogin(); // Call handleLogin to set the logged-in state
+
+        // Clear all form fields
+        setUsername('');
+        setPassword('');
+        setError('');
+
+        // Navigate to the Price Comparison page
         navigate('/compare');
       } else {
         setError('Login failed');
@@ -25,17 +34,17 @@ const LoginForm = ({ handleLogin }) => {
   };
 
   return (
-    <>
+    <Container>
       <Typography variant="h4" gutterBottom>Login</Typography>
       {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Email"
+          label="Username"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
           label="Password"
@@ -48,7 +57,7 @@ const LoginForm = ({ handleLogin }) => {
         />
         <Button type="submit" variant="contained" color="primary">Login</Button>
       </form>
-    </>
+    </Container>
   );
 };
 
