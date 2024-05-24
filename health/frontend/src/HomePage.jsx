@@ -8,7 +8,7 @@ const HomePage = () => {
     <div className="homePage">
       <Container>
         <Typography variant="h1" gutterBottom>ClearCost Health</Typography>
-        <Typography variant="h2" gutterBottom>Empowering Healthcare decisionmaking Through Transparent Pricing</Typography>
+        <Typography variant="h2" gutterBottom>Empowering Healthcare Decision Making Through Transparent Pricing</Typography>
         <Link to="/auth" style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="primary" style={{ marginRight: '10px' }}>
             Login / Register

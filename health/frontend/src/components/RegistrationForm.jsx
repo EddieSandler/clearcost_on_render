@@ -77,6 +77,7 @@ const RegistrationForm = ({ handleLogin }) => {
           margin="normal"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="dark-textfield"
         />
         <TextField
           label="Password"
@@ -86,6 +87,7 @@ const RegistrationForm = ({ handleLogin }) => {
           margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="dark-textfield"
         />
         <TextField
           label="Confirm Password"
@@ -95,6 +97,7 @@ const RegistrationForm = ({ handleLogin }) => {
           margin="normal"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          className="dark-textfield"
         />
         <TextField
           label="Insurance Company"
@@ -103,6 +106,7 @@ const RegistrationForm = ({ handleLogin }) => {
           margin="normal"
           value={insuranceCompany}
           onChange={(e) => setInsuranceCompany(e.target.value)}
+          className="dark-textfield"
         />
         <TextField
           label="Copayment %"
@@ -111,6 +115,7 @@ const RegistrationForm = ({ handleLogin }) => {
           margin="normal"
           value={copayment}
           onChange={(e) => setCopayment(e.target.value)}
+          className="dark-textfield"
         />
         <TextField
           label="Co-insurance ($ or %)"
@@ -119,6 +124,7 @@ const RegistrationForm = ({ handleLogin }) => {
           margin="normal"
           value={coinsurance}
           onChange={(e) => setCoinsurance(e.target.value)}
+          className="dark-textfield"
         />
         <TextField
           label="Deductible ($)"
@@ -127,6 +133,7 @@ const RegistrationForm = ({ handleLogin }) => {
           margin="normal"
           value={deductible}
           onChange={(e) => setDeductible(e.target.value)}
+          className="dark-textfield"
         />
         <Button type="submit" variant="contained" color="primary">Register</Button>
       </form>

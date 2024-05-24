@@ -45,6 +45,7 @@ const LoginForm = ({ handleLogin }) => {
           margin="normal"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="dark-textfield"
         />
         <TextField
           label="Password"
@@ -54,6 +55,7 @@ const LoginForm = ({ handleLogin }) => {
           margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="dark-textfield"
         />
         <Button type="submit" variant="contained" color="primary">Login</Button>
       </form>

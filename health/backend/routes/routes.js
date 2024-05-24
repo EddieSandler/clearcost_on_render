@@ -5,7 +5,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
-const authenticateToken = require('../middleWare/auth.js');
+const {authenticateToken,checkAdmin} = require('../middleWare/auth.js');
 
 router.use(cors());
 
@@ -69,7 +69,7 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.get('/admin', (req, res, next) => {
+router.get('/admin',(req, res, next) => {
 try {
   const token = req.body.token;
   const data= jwt.verify(token,SECRET_KEY)

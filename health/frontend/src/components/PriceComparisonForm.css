@@ -35,3 +35,12 @@ body, html {
   justify-content: center;
   width: 100%;
 }
+
+.dark-textfield .MuiInputBase-input {
+  color: black; /* Text color */
+  background-color: lightgray; /* Background color */
+}
+
+.dark-textfield .MuiInputLabel-root {
+  color: black; /* Label color */
+}
