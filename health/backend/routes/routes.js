@@ -145,13 +145,18 @@ router.get('/compare', async (req, res) => {
 
 router.post('/save-comparison', authenticateToken, async (req, res) => {
   const { comparison } = req.body;
-  const userId = req.user.userId;
+  const userId = req.user.id;
+  console.log('is userId working?',userId)
   try {
+
+    console.log('user id : ',userId )
+    console.log('saving comparison:',JSON.stringify(comparison))
     const result = await db.query(`UPDATE users SET saved_comparisons=
     COALESCE(saved_comparisons,\'[]\'::jsonb) ||
     $1::jsonb WHERE id= $2 RETURNING *`,
       [JSON.stringify(comparison), userId]
     );
+    console.log(result)
 if(result.rows === 0) {
   return res.status(404).json({error:"User not found" })
 }

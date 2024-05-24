@@ -73,6 +73,48 @@ function PriceComparisonForm() {
     setSelectedCards([]);
   };
 
+  const saveComparison = async()=>{
+    const token=sessionStorage.getItem('token')
+    if(!token){
+      alert('Please login to save comparison')
+      return
+    }
+  const comparison =selectedCards.map(facilityName=>{
+    const selectedFacility=result.find(item=>item.facility_name === facilityName)
+  return {
+
+    procedure_name: selectedFacility.procedure_name,
+    facility_name: selectedFacility.facility_name,
+    price: selectedFacility.price
+  }
+  });
+
+try {
+  const response = await axios.post('http://localhost:3000/save-comparison',{
+    comparison
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+
+    });
+    if (response.status === 200) {
+      alert('Comparison saved successfully');
+    } else {
+      alert('Failed to save comparison');
+    }
+
+
+} catch (error) {
+  console.error('Error saving comparison:', error);
+      alert('Failed to save comparison');
+
+}
+
+  };
+
+
+
   return (
     <div className="fullscreen-background">
       <Container className="formContainer">
@@ -122,7 +164,7 @@ function PriceComparisonForm() {
 
         {selectedCards.length > 0 && (
           <div style={{ marginTop: '20px' }}>
-            <Typography variant="h6">Comparison</Typography>
+            <Typography variant="h6">Select Facilities For Comparison</Typography>
             {selectedCards.map((facilityName) => {
               const selectedFacility = result.find(item => item.facility_name === facilityName);
               return (
@@ -141,6 +183,11 @@ function PriceComparisonForm() {
                 </Card>
               );
             })}
+           <Button variant="contained" color="primary" onClick={saveComparison} style={{ marginTop: '20px' }}>
+              Save Comparison
+            </Button>
+
+
           </div>
         )}
 
