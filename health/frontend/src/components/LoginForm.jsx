@@ -16,6 +16,8 @@ const LoginForm = ({ handleLogin }) => {
     try {
       const response = await axios.post('http://localhost:3000/login', { username, password });
       if (response.status === 200) {
+        const token = response.data.token;
+        sessionStorage.setItem('token', token);
         handleLogin(); // Call handleLogin to set the logged-in state
 
         // Clear all form fields

@@ -5,7 +5,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
-const {authenticateToken,checkAdmin} = require('../middleWare/auth.js');
+const { authenticateToken, checkAdmin } = require('../middleWare/auth.js');
 
 router.use(cors());
 
@@ -69,15 +69,15 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.get('/admin',(req, res, next) => {
-try {
-  const token = req.body.token;
-  const data= jwt.verify(token,SECRET_KEY)
+router.get('/admin', (req, res, next) => {
+  try {
+    const token = req.body.token;
+    const data = jwt.verify(token, SECRET_KEY);
 
-  return res.json({msg:"Signed In as admin"})
-}
-  catch(e){
-    return next(e)
+    return res.json({ msg: "Signed In as admin" });
+  }
+  catch (e) {
+    return next(e);
 
   }
 
@@ -142,6 +142,34 @@ router.get('/compare', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+router.post('/save-comparison', authenticateToken, async (req, res) => {
+  const { comparison } = req.body;
+  const userId = req.user.userId;
+  try {
+    const result = await db.query(`UPDATE users SET saved_comparisons=
+    COALESCE(saved_comparisons,\'[]\'::jsonb) ||
+    $1::jsonb WHERE id= $2 RETURNING *`,
+      [JSON.stringify(comparison), userId]
+    );
+if(result.rows === 0) {
+  return res.status(404).json({error:"User not found" })
+}
+res.json({message:'Comparison saved successfully',user:result.rows[0]})
+
+  } catch (err) {
+    console.error('Error saving comparison:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+
+
+  }
+
+});
+
+
+
+
+
 
 module.exports = router;
 
