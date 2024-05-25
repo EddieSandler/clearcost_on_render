@@ -39,13 +39,16 @@ const PriceComparisonForm = () => {
     { label: 'Preventive Exam age 65+', id: 24 }
   ];
 
-
   const handleOptionChange = async (event, newValue) => {
     if (newValue) {
       setSelectedOption(newValue);
       try {
+        const token = sessionStorage.getItem('token');
         const response = await axios.get('http://localhost:3000/compare', {
-          params: { procedureId: newValue.id }
+          params: { procedureId: newValue.id },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
         setResult(response.data);
       } catch (error) {

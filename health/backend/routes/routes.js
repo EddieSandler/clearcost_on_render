@@ -22,7 +22,6 @@ router.post('/login', async (req, res) => {
 
     if (!isMatch) {
       return res.status(400).send('Invalid Credentials');
-
     }
 
     const token = jwt.sign({
@@ -36,20 +35,11 @@ router.post('/login', async (req, res) => {
 
     console.log('login successful, token:', token);
     return res.json({ message: 'Login successful', token });
-
   } catch (err) {
     console.error('Login Error:', err);
     res.status(500).send('Error logging in');
-
   }
-
-
-
 });
-
-
-
-
 
 router.post('/register', async (req, res) => {
   const { username, password, insuranceCompany, copayment, coinsurance, deductible } = req.body;
@@ -65,40 +55,20 @@ router.post('/register', async (req, res) => {
     console.error('Registration error:', err);
     res.status(500).send('Error registering user');
   }
-
-
 });
+
+// Apply authenticateToken middleware to all routes below this line
+router.use(authenticateToken);
 
 router.get('/admin', (req, res, next) => {
   try {
     const token = req.body.token;
     const data = jwt.verify(token, SECRET_KEY);
-
     return res.json({ msg: "Signed In as admin" });
-  }
-  catch (e) {
+  } catch (e) {
     return next(e);
-
   }
-
 });
-
-
-
-// router.post('/data', (req, res) => {
-//   res.send('User will insert data into db from this endpoint- will need to add JWT (verifyToken) functionality');
-// });
-
-// router.put('/data/:id', (req, res) => {
-//   res.send('User will update user data from this endpoint- will need to add JWT (verifyToken) functionality');
-// });
-
-// router.delete('/data/:id', (req, res) => {
-//   res.send('User will delete data from db at this endpoint- will need to add JWT (VerifyToken) functionality');
-// });
-
-
-
 
 router.get('/compare', async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -110,7 +80,6 @@ router.get('/compare', async (req, res) => {
   }
 
   const procedureIdInt = parseInt(procedureId);
-
   console.log(`Querying for procedureId: ${procedureIdInt}`);
 
   try {
@@ -136,169 +105,71 @@ router.get('/compare', async (req, res) => {
     }
 
     res.json(result.rows);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-router.post('/save-comparison', authenticateToken, async (req, res) => {
+router.post('/save-comparison', async (req, res) => {
   const { comparison } = req.body;
   const userId = req.user.id;
 
   try {
-
-
-    // console.log('saving comparison:',JSON.stringify(comparison))
-    const result = await db.query(`UPDATE users SET saved_comparisons=
-    COALESCE(saved_comparisons,\'[]\'::jsonb) ||
-    $1::jsonb WHERE id= $2 RETURNING *`,
+    const result = await db.query(`
+      UPDATE users SET saved_comparisons = COALESCE(saved_comparisons, '[]'::jsonb) || $1::jsonb WHERE id = $2 RETURNING *`,
       [JSON.stringify(comparison), userId]
     );
-    console.log(result)
-if(result.rows === 0) {
-  return res.status(404).json({error:"User not found" })
-}
-res.json({message:'Comparison saved successfully',user:result.rows[0]})
 
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({ message: 'Comparison saved successfully', user: result.rows[0] });
   } catch (err) {
     console.error('Error saving comparison:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-})
-
-
-
-  // Retrieve comparisons
-  router.get('/get-comparisons', authenticateToken, async (req, res) => {
-    const userId = req.user.id;
-
-    try {
-      const result = await db.query(
-        'SELECT saved_comparisons FROM users WHERE id = $1',
-        [userId]
-      );
-
-      if (result.rows.length === 0) {
-        return res.status(404).json({ error: "User not found" });
-      }
-
-      res.json({ comparisons: result.rows[0].saved_comparisons });
-    } catch (err) {
-      console.error('Error retrieving comparisons:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-
 });
 
+router.get('/get-comparisons', async (req, res) => {
+  const userId = req.user.id;
 
+  try {
+    const result = await db.query(
+      'SELECT saved_comparisons FROM users WHERE id = $1',
+      [userId]
+    );
 
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
+    res.json({ comparisons: result.rows[0].saved_comparisons });
+  } catch (err) {
+    console.error('Error retrieving comparisons:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
+router.delete('/delete-all-comparisons', async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const result = await db.query(
+      'UPDATE users SET saved_comparisons = \'[]\'::jsonb WHERE id = $1 RETURNING *',
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found or no comparisons to delete' });
+    }
+
+    res.json({ message: 'All comparisons deleted successfully', user: result.rows[0] });
+  } catch (err) {
+    console.error('Error deleting all comparisons:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// router.get('/test', async (req, res) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   const { procedureId } = req.query;
-
-//   if (!procedureId || isNaN(parseInt(procedureId))) {
-//     return res.status(400).json({ error: "Invalid or missing procedureId" });
-//   }
-
-//   const procedureIdInt = parseInt(procedureId);
-
-//   console.log(`Querying for procedureId: ${procedureIdInt}`);
-
-//   try {
-//     const result = await db.query(`
-//       SELECT
-//         procedures.procedure_name,
-//         facilities.facility_name,
-//         pricing.price
-//       FROM
-//         pricing
-//       JOIN
-//         facilities ON pricing.facility_id = facilities.id
-//       JOIN
-//         procedures ON pricing.procedure_id = procedures.id
-//       WHERE
-//         procedures.id = $1;
-//     `, [procedureIdInt]);
-
-//     console.log(`Query result: ${JSON.stringify(result.rows)}`);
-
-//     if (result.rows.length === 0) {
-//       return res.status(404).json({ error: "No data found for the given procedureId and facilityId" });
-//     }
-
-//     res.json(result.rows);
-
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
-
-// router.get('/search', async (req, res) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   const { procedureId, facilityId } = req.query;
-
-//   if (!procedureId || isNaN(parseInt(procedureId))) {
-//     return res.status(400).json({ error: "Invalid or missing procedureId" });
-//   }
-//   if (!facilityId || isNaN(parseInt(facilityId))) {
-//     return res.status(400).json({ error: "Invalid or missing facilityId" });
-//   }
-
-//   const procedureIdInt = parseInt(procedureId);
-//   const facilityIdInt = parseInt(facilityId);
-
-//   console.log(`Querying for procedureId: ${procedureIdInt}, facilityId: ${facilityIdInt}`);
-
-//   try {
-//     const result = await db.query(`
-//       SELECT
-//         facilities.facility_name,
-//         procedures.procedure_name,
-//         pricing.price
-//       FROM
-//         pricing
-//       JOIN
-//         facilities ON pricing.facility_id = facilities.id
-//       JOIN
-//         procedures ON pricing.procedure_id = procedures.id
-//       WHERE
-//         pricing.procedure_id = $1
-//       AND
-//         pricing.facility_id = $2;
-//     `, [procedureIdInt, facilityIdInt]);
-
-//     console.log(`Query result: ${JSON.stringify(result.rows)}`);
-
-//     if (result.rows.length === 0) {
-//       return res.status(404).json({ error: "No data found for the given procedureId and facilityId" });
-//     }
-
-//     res.json(result.rows);
-
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
