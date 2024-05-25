@@ -10,6 +10,7 @@ import Auth from './components/Auth';
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import SavedComparisons from './components/SavedComparison';
+import ProfileUpdateForm from './components/ProfileUpdateForm';
 
 function App() {
   const [isRegister, setIsRegister] = useState(false); // Default to login screen
@@ -74,6 +75,12 @@ function AppContent({ isRegister, showRegisterForm, showLoginForm, isLoggedIn, h
               <PriceComparisonForm />
             </ProtectedRoute>
           } />
+          <Route path="/update-profile" element={
+  <ProtectedRoute isLoggedIn={isLoggedIn}>
+    <ProfileUpdateForm />
+  </ProtectedRoute>
+} />
+
         </Routes>
       </div>
     </>

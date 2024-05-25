@@ -172,4 +172,24 @@ router.delete('/delete-all-comparisons', async (req, res) => {
   }
 });
 
+router.put('/update-profile', authenticateToken, async (req, res) => {
+  const { insuranceCompany, copayment, coinsurance } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const result = await db.query(
+      'UPDATE users SET insurance_company = $1, copayment = $2, coinsurance = $3 WHERE id = $4 RETURNING *',
+      [insuranceCompany, copayment, coinsurance, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ message: 'Profile updated successfully', user: result.rows[0] });
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 module.exports = router;
