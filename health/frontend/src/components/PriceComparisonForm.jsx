@@ -190,8 +190,16 @@ function PriceComparisonForm() {
             Clear Selection
           </Button>
         )}
+         <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/saved-comparisons')} // Navigate to saved comparisons
+          style={{ marginTop: '20px' }}
+        >
+          View Previous Searches
+        </Button>
 
-       
+
       </Container>
     </div>
   );
