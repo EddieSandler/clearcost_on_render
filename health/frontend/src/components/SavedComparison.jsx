@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, Card, CardContent, CircularProgress, Grid, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import './PriceComparisonForm.css'; // Ensure this CSS file is imported
 
 const SavedComparisons = () => {
   const [comparisons, setComparisons] = useState([]);
@@ -48,15 +49,26 @@ const SavedComparisons = () => {
 
   return (
     <Container>
-            <Typography variant="h4" gutterBottom>Saved Comparisons</Typography>
+
+      <Typography variant="h4" gutterBottom>Saved Procedures</Typography>
       {(!Array.isArray(comparisons) || comparisons.length === 0) ? (
-        <Typography variant="h6">No saved comparisons available.</Typography>
+        <div style={{ textAlign: 'center' }}>
+          <Typography variant="h6">No saved procedures available.</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate('/compare')} // Navigate back to /compare
+            style={{ marginTop: '20px' }}
+          >
+            Back
+          </Button>
+        </div>
       ) : (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center"> {/* Center align the grid container */}
           {comparisons.map((comparison, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}> {/* Adjust grid item size for 4x4 layout */}
-              <Card variant="outlined">
-                <CardContent>
+            // <Grid item xs={12} sm={6} md={3} key={index}> {/* Adjust grid item size for 4x4 layout */}
+              <Card variant="outlined" className="card">
+                <CardContent className="card-content">
                   <Typography variant="h6" component="div">
                     {comparison.procedure_name}
                   </Typography>
@@ -68,7 +80,7 @@ const SavedComparisons = () => {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
+            // </Grid>
           ))}
         </Grid>
       )}
@@ -78,7 +90,7 @@ const SavedComparisons = () => {
         onClick={() => navigate('/compare')} // Navigate back to /compare
         style={{ marginTop: '20px' }}
       >
-        Back to Compare
+        Back
       </Button>
     </Container>
   );

@@ -208,7 +208,7 @@ const PriceComparisonForm = () => {
               </Typography>
             )}
             <Button variant="contained" color="primary" onClick={saveComparison} style={{ marginTop: '20px' }}>
-              Save Comparison
+              Save Procedure
             </Button>
           </div>
         )}
