@@ -146,11 +146,11 @@ router.get('/compare', async (req, res) => {
 router.post('/save-comparison', authenticateToken, async (req, res) => {
   const { comparison } = req.body;
   const userId = req.user.id;
-  console.log('is userId working?',userId)
+
   try {
 
-    console.log('user id : ',userId )
-    console.log('saving comparison:',JSON.stringify(comparison))
+
+    // console.log('saving comparison:',JSON.stringify(comparison))
     const result = await db.query(`UPDATE users SET saved_comparisons=
     COALESCE(saved_comparisons,\'[]\'::jsonb) ||
     $1::jsonb WHERE id= $2 RETURNING *`,
@@ -165,9 +165,35 @@ res.json({message:'Comparison saved successfully',user:result.rows[0]})
   } catch (err) {
     console.error('Error saving comparison:', err);
     res.status(500).json({ error: 'Internal Server Error' });
-
-
   }
+
+
+
+
+
+  // Retrieve comparisons
+router.get('/get-comparisons', authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  console.log('user id: ',userId)
+
+  try {
+    const result = await db.query(
+      'SELECT saved_comparisons FROM users WHERE id = $1',
+      [userId]
+    );
+    console.log('retrieved comparison',result)
+
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({ comparisons: result.rows[0].saved_comparisons });
+  } catch (err) {
+    console.error('Error retrieving comparisons:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 });
 

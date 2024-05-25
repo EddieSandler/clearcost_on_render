@@ -9,6 +9,7 @@ import PriceComparisonForm from './components/PriceComparisonForm';
 import Auth from './components/Auth';
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
+import SavedComparisons from './components/SavedComparison'
 
 function App() {
   const [isRegister, setIsRegister] = useState(false); // Default to login screen
@@ -58,6 +59,7 @@ function AppContent({ isRegister, showRegisterForm, showLoginForm, isLoggedIn, h
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
+          <Route path="/saved-comparisons" element={<SavedComparisons />} />
           <Route
             path="/auth"
             element={<Auth isRegister={isRegister} handleLogin={handleLogin} showRegisterForm={showRegisterForm} showLoginForm={showLoginForm} />}

@@ -3,12 +3,14 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Card, CardContent, Typography, Grid, Checkbox, FormControlLabel, Container, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import './PriceComparisonForm.css'; // Import the CSS file
 
 function PriceComparisonForm() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [result, setResult] = useState(null);
   const [selectedCards, setSelectedCards] = useState([]);
+  const navigate = useNavigate(); // Initialize useNavigate hook inside the component
 
   const options = [
     { label: 'Colonoscopy', id: 1 },
@@ -73,47 +75,41 @@ function PriceComparisonForm() {
     setSelectedCards([]);
   };
 
-  const saveComparison = async()=>{
-    const token=sessionStorage.getItem('token')
-    if(!token){
-      alert('Please login to save comparison')
-      return
+  const saveComparison = async () => {
+    const token = sessionStorage.getItem('token'); // Assuming you save your token in sessionStorage
+    if (!token) {
+      alert('Please log in to save comparisons');
+      return;
     }
-  const comparison =selectedCards.map(facilityName=>{
-    const selectedFacility=result.find(item=>item.facility_name === facilityName)
-  return {
 
-    procedure_name: selectedFacility.procedure_name,
-    facility_name: selectedFacility.facility_name,
-    price: selectedFacility.price
-  }
-  });
-
-try {
-  const response = await axios.post('http://localhost:3000/save-comparison',{
-    comparison
-    },{
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-
+    const comparison = selectedCards.map(facilityName => {
+      const selectedFacility = result.find(item => item.facility_name === facilityName);
+      return {
+        procedure_name: selectedFacility.procedure_name,
+        facility_name: selectedFacility.facility_name,
+        price: selectedFacility.price
+      };
     });
-    if (response.status === 200) {
-      alert('Comparison saved successfully');
-    } else {
+
+    try {
+      const response = await axios.post('http://localhost:3000/save-comparison', {
+        comparison
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 200) {
+        alert('Comparison saved successfully');
+      } else {
+        alert('Failed to save comparison');
+      }
+    } catch (error) {
+      console.error('Error saving comparison:', error);
       alert('Failed to save comparison');
     }
-
-
-} catch (error) {
-  console.error('Error saving comparison:', error);
-      alert('Failed to save comparison');
-
-}
-
   };
-
-
 
   return (
     <div className="fullscreen-background">
@@ -164,7 +160,7 @@ try {
 
         {selectedCards.length > 0 && (
           <div style={{ marginTop: '20px' }}>
-            <Typography variant="h6">Select Facilities For Comparison</Typography>
+            <Typography variant="h6">Comparison</Typography>
             {selectedCards.map((facilityName) => {
               const selectedFacility = result.find(item => item.facility_name === facilityName);
               return (
@@ -183,11 +179,9 @@ try {
                 </Card>
               );
             })}
-           <Button variant="contained" color="primary" onClick={saveComparison} style={{ marginTop: '20px' }}>
+            <Button variant="contained" color="primary" onClick={saveComparison} style={{ marginTop: '20px' }}>
               Save Comparison
             </Button>
-
-
           </div>
         )}
 
@@ -196,6 +190,8 @@ try {
             Clear Selection
           </Button>
         )}
+
+       
       </Container>
     </div>
   );

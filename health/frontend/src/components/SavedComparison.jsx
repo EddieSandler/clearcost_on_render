@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, Card, CardContent } from '@mui/material';
+import { Container, Typography, Card, CardContent, CircularProgress, Grid } from '@mui/material';
 
-function SavedComparisons() {
+const SavedComparisons = () => {
   const [comparisons, setComparisons] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchComparisons = async () => {
-      const token = localStorage.getItem('token'); // Assuming you save your token in localStorage
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        alert('Please log in to view saved comparisons');
+        setLoading(false);
+        return;
+      }
 
       try {
         const response = await axios.get('http://localhost:3000/get-comparisons', {
@@ -16,46 +22,55 @@ function SavedComparisons() {
           }
         });
 
-        setComparisons(response.data.comparisons);
+        console.log('API Response:', response.data);
+        if (response.status === 200) {
+          setComparisons(response.data.comparisons);
+        } else {
+          alert('Failed to retrieve comparisons');
+        }
       } catch (error) {
-        console.error('Error fetching comparisons:', error);
+        console.error('Error retrieving comparisons:', error);
+        alert('Failed to retrieve comparisons');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchComparisons();
   }, []);
 
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (!Array.isArray(comparisons) || comparisons.length === 0) {
+    return <Typography variant="h6">No saved comparisons available.</Typography>;
+  }
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom>Saved Comparisons</Typography>
-      {comparisons.length > 0 ? (
-        comparisons.map((comparison, index) => (
-          <Card key={index} variant="outlined" style={{ marginBottom: '20px' }}>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Comparison {index + 1}
-              </Typography>
-              {comparison.map((item, idx) => (
-                <div key={idx}>
-                  <Typography variant="body2">
-                    Procedure: {item.procedure_name}
-                  </Typography>
-                  <Typography variant="body2">
-                    Facility: {item.facility_name}
-                  </Typography>
-                  <Typography variant="body2">
-                    Price: ${item.price}
-                  </Typography>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        ))
-      ) : (
-        <Typography>No saved comparisons found.</Typography>
-      )}
+      <Grid container spacing={3}>
+        {comparisons.map((comparison, index) => (
+          <Grid item xs={12} key={index}>
+            <Card variant="outlined">
+              <CardContent>
+                <Typography variant="h6" component="div">
+                  {comparison.procedure_name}
+                </Typography>
+                <Typography variant="body2">
+                  Facility: {comparison.facility_name}
+                </Typography>
+                <Typography variant="body2">
+                  Price: ${comparison.price}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </Container>
   );
-}
+};
 
 export default SavedComparisons;
