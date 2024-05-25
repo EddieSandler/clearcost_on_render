@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
@@ -9,7 +9,7 @@ import PriceComparisonForm from './components/PriceComparisonForm';
 import Auth from './components/Auth';
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
-import SavedComparisons from './components/SavedComparison'
+import SavedComparisons from './components/SavedComparison';
 
 function App() {
   const [isRegister, setIsRegister] = useState(false); // Default to login screen
@@ -28,6 +28,7 @@ function App() {
   };
 
   const handleLogout = () => {
+    sessionStorage.removeItem('token');
     setIsLoggedIn(false);
   };
 
@@ -59,7 +60,11 @@ function AppContent({ isRegister, showRegisterForm, showLoginForm, isLoggedIn, h
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
-          <Route path="/saved-comparisons" element={<SavedComparisons />} />
+          <Route path="/saved-comparisons" element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <SavedComparisons />
+            </ProtectedRoute>
+          } />
           <Route
             path="/auth"
             element={<Auth isRegister={isRegister} handleLogin={handleLogin} showRegisterForm={showRegisterForm} showLoginForm={showLoginForm} />}

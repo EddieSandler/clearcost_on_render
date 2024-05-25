@@ -6,7 +6,7 @@ import { Card, CardContent, Typography, Grid, Checkbox, FormControlLabel, Contai
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import './PriceComparisonForm.css'; // Import the CSS file
 
-function PriceComparisonForm() {
+const PriceComparisonForm = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [result, setResult] = useState(null);
   const [selectedCards, setSelectedCards] = useState([]);
@@ -39,16 +39,14 @@ function PriceComparisonForm() {
     { label: 'Preventive Exam age 65+', id: 24 }
   ];
 
+
   const handleOptionChange = async (event, newValue) => {
     if (newValue) {
-      console.log('Selected option:', newValue);
       setSelectedOption(newValue);
-
       try {
         const response = await axios.get('http://localhost:3000/compare', {
           params: { procedureId: newValue.id }
         });
-        console.log('Response from backend:', response.data);
         setResult(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -76,7 +74,7 @@ function PriceComparisonForm() {
   };
 
   const saveComparison = async () => {
-    const token = sessionStorage.getItem('token'); // Assuming you save your token in sessionStorage
+    const token = sessionStorage.getItem('token');
     if (!token) {
       alert('Please log in to save comparisons');
       return;
@@ -111,6 +109,25 @@ function PriceComparisonForm() {
     }
   };
 
+  const calculatePriceDifference = () => {
+    if (selectedCards.length === 2) {
+      const [facility1, facility2] = selectedCards.map(facilityName => result.find(item => item.facility_name === facilityName));
+      const priceDifference = Math.abs(parseFloat(facility1.price) - parseFloat(facility2.price));
+      return priceDifference.toFixed(2);
+    }
+    return null;
+  };
+
+  const multiplyByCoinsurance = (price) => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const user = JSON.parse(atob(token.split('.')[1])); // Decode token payload
+      const coinsurance = user.coinsurance;
+      return (price * (coinsurance / 100)).toFixed(2);
+    }
+    return price;
+  };
+
   return (
     <div className="fullscreen-background">
       <Container className="formContainer">
@@ -142,6 +159,9 @@ function PriceComparisonForm() {
                   </Typography>
                   <Typography variant="body2">
                     Price: ${item.price}
+                  </Typography>
+                  <Typography variant="body2">
+                    Price with Co-Insurance: ${multiplyByCoinsurance(item.price)}
                   </Typography>
                   <FormControlLabel
                     control={
@@ -175,10 +195,18 @@ function PriceComparisonForm() {
                     <Typography variant="body2">
                       Price: ${selectedFacility.price}
                     </Typography>
+                    <Typography variant="body2">
+                      Price with Co-Insurance: ${multiplyByCoinsurance(selectedFacility.price)}
+                    </Typography>
                   </CardContent>
                 </Card>
               );
             })}
+            {selectedCards.length === 2 && (
+              <Typography variant="h6" style={{ marginTop: '20px' }}>
+                Price Difference: ${calculatePriceDifference()}
+              </Typography>
+            )}
             <Button variant="contained" color="primary" onClick={saveComparison} style={{ marginTop: '20px' }}>
               Save Comparison
             </Button>
@@ -190,7 +218,8 @@ function PriceComparisonForm() {
             Clear Selection
           </Button>
         )}
-         <Button
+
+        <Button
           variant="contained"
           color="primary"
           onClick={() => navigate('/saved-comparisons')} // Navigate to saved comparisons
@@ -198,8 +227,6 @@ function PriceComparisonForm() {
         >
           View Previous Searches
         </Button>
-
-
       </Container>
     </div>
   );

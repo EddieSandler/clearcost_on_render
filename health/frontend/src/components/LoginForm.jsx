@@ -18,6 +18,7 @@ const LoginForm = ({ handleLogin }) => {
       if (response.status === 200) {
         const token = response.data.token;
         sessionStorage.setItem('token', token);
+        console.log('Token stored:', token);
         handleLogin(); // Call handleLogin to set the logged-in state
 
         // Clear all form fields
