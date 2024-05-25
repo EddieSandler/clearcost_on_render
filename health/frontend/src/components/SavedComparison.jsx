@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, Card, CardContent, CircularProgress, Grid } from '@mui/material';
+import { Container, Typography, Card, CardContent, CircularProgress, Grid,Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const SavedComparisons = () => {
   const [comparisons, setComparisons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchComparisons = async () => {
@@ -69,6 +71,14 @@ const SavedComparisons = () => {
           </Grid>
         ))}
       </Grid>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => navigate('/compare')} // Navigate back to /compare
+        style={{ marginTop: '20px' }}
+      >
+        Back
+      </Button>
     </Container>
   );
 };
