@@ -48,51 +48,52 @@ const SavedComparisons = () => {
   }
 
   return (
-    <Container>
-
-      <Typography variant="h4" gutterBottom>Saved Procedures</Typography>
-      {(!Array.isArray(comparisons) || comparisons.length === 0) ? (
-        <div style={{ textAlign: 'center' }}>
-          <Typography variant="h6">No saved procedures available.</Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate('/compare')} // Navigate back to /compare
-            style={{ marginTop: '20px' }}
-          >
-            Back
-          </Button>
-        </div>
-      ) : (
-        <Grid container spacing={3} justifyContent="center"> {/* Center align the grid container */}
-          {comparisons.map((comparison, index) => (
-            // <Grid item xs={12} sm={6} md={3} key={index}> {/* Adjust grid item size for 4x4 layout */}
-              <Card variant="outlined" className="card">
-                <CardContent className="card-content">
-                  <Typography variant="h6" component="div">
-                    {comparison.procedure_name}
-                  </Typography>
-                  <Typography variant="body2">
-                    Facility: {comparison.facility_name}
-                  </Typography>
-                  <Typography variant="body2">
-                    Price: ${comparison.price}
-                  </Typography>
-                </CardContent>
-              </Card>
-            // </Grid>
-          ))}
-        </Grid>
-      )}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => navigate('/compare')} // Navigate back to /compare
-        style={{ marginTop: '20px' }}
-      >
-        Back
-      </Button>
-    </Container>
+    <div className="fullscreen-background"> {/* Wrapper div with background image */}
+      <Container>
+        <Typography variant="h4" gutterBottom>Saved Procedures</Typography>
+        {(!Array.isArray(comparisons) || comparisons.length === 0) ? (
+          <div style={{ textAlign: 'center' }}>
+            <Typography variant="h6">No saved procedures available.</Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate('/compare')} // Navigate back to /compare
+              style={{ marginTop: '20px' }}
+            >
+              Back
+            </Button>
+          </div>
+        ) : (
+          <Grid container spacing={3} justifyContent="center"> {/* Center align the grid container */}
+            {comparisons.map((comparison, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}> {/* Adjust grid item size for 3x3 layout */}
+                <Card variant="outlined" className="card">
+                  <CardContent className="card-content">
+                    <Typography variant="h6" component="div">
+                      {comparison.procedure_name}
+                    </Typography>
+                    <Typography variant="body2">
+                      Facility: {comparison.facility_name}
+                    </Typography>
+                    <Typography variant="body2">
+                      Price: ${comparison.price}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/compare')} // Navigate back to /compare
+          style={{ marginTop: '20px' }}
+        >
+          Back
+        </Button>
+      </Container>
+    </div>
   );
 };
 
