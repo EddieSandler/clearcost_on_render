@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, TextField, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+
 
 const ProfileUpdateForm = () => {
   const [insuranceCompany, setInsuranceCompany] = useState('');
   const [copayment, setCopayment] = useState('');
   const [coinsurance, setCoinsurance] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +70,17 @@ const ProfileUpdateForm = () => {
         />
         <Button type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>Update Profile</Button>
       </form>
-    </Container>
+      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate('/compare')}
+          >
+            Back
+          </Button>
+        </div>
+          </Container>
+
   );
 };
 
