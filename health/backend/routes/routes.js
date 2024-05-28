@@ -260,6 +260,67 @@ router.get('/procedures', async (req, res) => {
 
 
 
+// Endpoint to update procedure, facility, and price
+router.put('/update-procedure/:id', authenticateToken, checkAdmin, async (req, res) => {
+  const procedureId = parseInt(req.params.id);
+  const { cpt_code, procedure_name } = req.body;
+
+  try {
+    const result = await db.query(
+      'UPDATE procedures SET cpt_code = $1, procedure_name = $2 WHERE id = $3 RETURNING *',
+      [cpt_code, procedure_name, procedureId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Procedure not found' });
+    }
+
+    res.json({ message: 'Procedure updated successfully', procedure: result.rows[0] });
+  } catch (error) {
+    console.error('Error updating procedure:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+router.put('/update-facility/:id', authenticateToken, checkAdmin, async (req, res) => {
+  const facilityId = parseInt(req.params.id);
+  const { facility_name } = req.body;
+
+  try {
+    const result = await db.query(
+      'UPDATE facilities SET facility_name = $1 WHERE id = $2 RETURNING *',
+      [facility_name, facilityId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Facility not found' });
+    }
+
+    res.json({ message: 'Facility updated successfully', facility: result.rows[0] });
+  } catch (error) {
+    console.error('Error updating facility:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+router.put('/update-price/:id', authenticateToken, checkAdmin, async (req, res) => {
+  const pricingId = parseInt(req.params.id);
+  const { procedure_id, facility_id, price } = req.body;
+
+  try {
+    const result = await db.query(
+      'UPDATE pricing SET procedure_id = $1, facility_id = $2, price = $3 WHERE pricing_id = $4 RETURNING *',
+      [procedure_id, facility_id, price, pricingId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Pricing record not found' });
+    }
+
+    res.json({ message: 'Pricing updated successfully', pricing: result.rows[0] });
+  } catch (error) {
+    console.error('Error updating pricing:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 module.exports = router;
