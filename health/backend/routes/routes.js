@@ -189,7 +189,7 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
 });
 
 //the following endpoints are restricted to admin users.
-//admins can add procedures,facilities,and prices
+
 
 router.post('/admin',authenticateToken, checkAdmin, async (req, res, next) => {
 
@@ -201,6 +201,8 @@ router.post('/admin',authenticateToken, checkAdmin, async (req, res, next) => {
     return next(e);
   }
 });
+
+//admins can add procedures,facilities,and prices
 router.post('/add-procedure', authenticateToken, checkAdmin, async (req, res) => {
   const { cpt_code, procedure_name, facility_name, price } = req.body;
 
@@ -240,6 +242,17 @@ router.post('/add-procedure', authenticateToken, checkAdmin, async (req, res) =>
     res.status(201).json({ procedure: procedureResult.rows[0], facility: facilityResult.rows[0], pricing: pricingResult.rows[0] });
   } catch (error) {
     console.error('Error adding procedure, facility, and pricing:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+//endpoint to dynamically fetch all procedures when  front end pricecomparison form mounts
+router.get('/procedures', async (req, res) => {
+  try {
+    const result = await db.query('SELECT id, procedure_name FROM procedures');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching procedures:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
