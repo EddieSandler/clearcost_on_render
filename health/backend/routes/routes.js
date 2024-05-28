@@ -61,8 +61,10 @@ router.post('/register', async (req, res) => {
 // Apply authenticateToken middleware to all routes below this line
 router.use(authenticateToken);
 
-router.get('/admin', checkAdmin, async (req, res, next) => {
-  console.log('trying to log in as admin')
+
+
+router.post('/admin',authenticateToken, checkAdmin, async (req, res, next) => {
+
   try {
     const token = req.body.token;
     const data = jwt.verify(token, SECRET_KEY);
@@ -71,6 +73,8 @@ router.get('/admin', checkAdmin, async (req, res, next) => {
     return next(e);
   }
 });
+
+
 
 router.get('/compare', async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
