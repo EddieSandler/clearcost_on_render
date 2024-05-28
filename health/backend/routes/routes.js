@@ -43,12 +43,12 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { username, password, insuranceCompany, copayment, coinsurance, deductible } = req.body;
+  const { username, password, insuranceCompany, copayment, coinsurance, deductible,isAdmin } = req.body;
   try {
     const password_hash = await bcrypt.hash(password, 10); // Hash the password
     const result = await db.query(
-      'INSERT INTO users (username, password_hash, insurance_company, copayment, coinsurance, deductible,isAdmin) VALUES ($1, $2, $3, $4, $5, $6 $7) RETURNING *',
-      [username, password_hash, insuranceCompany, copayment, coinsurance, deductible,isAdmin || false]
+      'INSERT INTO users (username, password_hash, insurance_company, copayment, coinsurance, deductible, "isAdmin") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [username, password_hash, insuranceCompany, copayment, coinsurance, deductible, isAdmin ]
     );
 
     res.status(200).send(result.rows[0]);
