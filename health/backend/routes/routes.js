@@ -63,17 +63,6 @@ router.use(authenticateToken);
 
 
 
-router.post('/admin',authenticateToken, checkAdmin, async (req, res, next) => {
-
-  try {
-    const token = req.body.token;
-    const data = jwt.verify(token, SECRET_KEY);
-    return res.json({ msg: "Signed In as admin" });
-  } catch (e) {
-    return next(e);
-  }
-});
-
 
 
 router.get('/compare', async (req, res) => {
@@ -198,4 +187,66 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+//the following endpoints are restricted to admin users.
+//admins can add procedures,facilities,and prices
+
+router.post('/admin',authenticateToken, checkAdmin, async (req, res, next) => {
+
+  try {
+    const token = req.body.token;
+    const data = jwt.verify(token, SECRET_KEY);
+    return res.json({ msg: "Signed In as admin" });
+  } catch (e) {
+    return next(e);
+  }
+});
+router.post('/add-procedure', authenticateToken, checkAdmin, async (req, res) => {
+  const { cpt_code, procedure_name, facility_name, price } = req.body;
+
+  try {
+    // Add or retrieve procedure
+    const procedureResult = await db.query(
+      `INSERT INTO procedures (cpt_code, procedure_name)
+       VALUES ($1, $2)
+       ON CONFLICT (cpt_code, procedure_name) DO UPDATE
+       SET procedure_name = EXCLUDED.procedure_name
+       RETURNING id`,
+      [cpt_code, procedure_name]
+    );
+    const procedureId = procedureResult.rows[0].id;
+
+    // Add or retrieve facility
+    const facilityResult = await db.query(
+      `INSERT INTO facilities (facility_name)
+       VALUES ($1)
+       ON CONFLICT (facility_name) DO UPDATE
+       SET facility_name = EXCLUDED.facility_name
+       RETURNING id`,
+      [facility_name]
+    );
+    const facilityId = facilityResult.rows[0].id;
+
+    // Add pricing
+    const pricingResult = await db.query(
+      `INSERT INTO pricing (procedure_id, facility_id, price)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (procedure_id, facility_id) DO UPDATE
+       SET price = EXCLUDED.price
+       RETURNING *`,
+      [procedureId, facilityId, price]
+    );
+
+    res.status(201).json({ procedure: procedureResult.rows[0], facility: facilityResult.rows[0], pricing: pricingResult.rows[0] });
+  } catch (error) {
+    console.error('Error adding procedure, facility, and pricing:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
 module.exports = router;
