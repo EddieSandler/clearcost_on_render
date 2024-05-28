@@ -30,7 +30,8 @@ router.post('/login', async (req, res) => {
       insuranceCompany: user.insurance_company,
       copayment: user.copayment,
       coinsurance: user.coinsurance,
-      deductible: user.deductible
+      deductible: user.deductible,
+      isAdmin: user.isAdmin
     }, SECRET_KEY, { expiresIn: '1h' });
 
     console.log('login successful, token:', token);
@@ -46,8 +47,8 @@ router.post('/register', async (req, res) => {
   try {
     const password_hash = await bcrypt.hash(password, 10); // Hash the password
     const result = await db.query(
-      'INSERT INTO users (username, password_hash, insurance_company, copayment, coinsurance, deductible) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [username, password_hash, insuranceCompany, copayment, coinsurance, deductible]
+      'INSERT INTO users (username, password_hash, insurance_company, copayment, coinsurance, deductible,isAdmin) VALUES ($1, $2, $3, $4, $5, $6 $7) RETURNING *',
+      [username, password_hash, insuranceCompany, copayment, coinsurance, deductible,isAdmin || false]
     );
 
     res.status(200).send(result.rows[0]);
@@ -60,7 +61,8 @@ router.post('/register', async (req, res) => {
 // Apply authenticateToken middleware to all routes below this line
 router.use(authenticateToken);
 
-router.get('/admin', (req, res, next) => {
+router.get('/admin', checkAdmin, async (req, res, next) => {
+  console.log('trying to log in as admin')
   try {
     const token = req.body.token;
     const data = jwt.verify(token, SECRET_KEY);
