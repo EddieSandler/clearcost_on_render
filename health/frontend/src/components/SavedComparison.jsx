@@ -14,7 +14,7 @@ const SavedComparisons = () => {
       const token = sessionStorage.getItem('token');
       console.log('Retrieved token:', token);
       if (!token) {
-        alert('Please log in to view saved comparisons');
+        alert('Please log in to view saved procedures');
         setLoading(false);
         return;
       }
@@ -30,11 +30,11 @@ const SavedComparisons = () => {
         if (response.status === 200) {
           setComparisons(response.data.comparisons);
         } else {
-          alert('Failed to retrieve comparisons');
+          alert('Failed to retrieve saved  procedures');
         }
       } catch (error) {
-        console.error('Error retrieving comparisons:', error);
-        alert('Failed to retrieve comparisons');
+        console.error('Error retrieving saved procedures:', error);
+        alert('Failed to retrieve saved procedures');
       } finally {
         setLoading(false);
       }
@@ -46,7 +46,7 @@ const SavedComparisons = () => {
   const deleteAllComparisons = async () => {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      alert('Please log in to delete all comparisons');
+      alert('Please log in to delete saved procedures');
       return;
     }
 
@@ -58,14 +58,14 @@ const SavedComparisons = () => {
       });
 
       if (response.status === 200) {
-        alert('All comparisons deleted successfully');
+        alert('All saved procedures will be deleted');
         setComparisons([]);
       } else {
-        alert('Failed to delete all comparisons');
+        alert('Failed to delete saved procedures');
       }
     } catch (error) {
-      console.error('Error deleting all comparisons:', error);
-      alert('Failed to delete all comparisons');
+      console.error('Error deleting saved procedures:', error);
+      alert('Failed to delete saved procedures');
     }
   };
 
@@ -108,7 +108,7 @@ const SavedComparisons = () => {
               onClick={deleteAllComparisons}
               style={{ marginTop: '20px' }}
             >
-              Delete All
+              Delete
             </Button>
           </>
         )}
