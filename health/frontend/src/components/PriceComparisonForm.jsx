@@ -1,63 +1,35 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Card, CardContent, Typography, Grid, Checkbox, FormControlLabel, Container, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
-import './PriceComparisonForm.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom';
+import './PriceComparisonForm.css';
 
 const PriceComparisonForm = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [result, setResult] = useState(null);
   const [selectedCards, setSelectedCards] = useState([]);
-  const [options, setOptions] = useState([]); // Move options to state
-  const navigate = useNavigate(); // Initialize useNavigate hook inside the component
+  const [options, setOptions] = useState([]);
+  const navigate = useNavigate();
 
-  // const options = [
-  //   { label: 'Colonoscopy', id: 1 },
-  //   { label: 'Routine obstetric care', id: 2 },
-  //   { label: 'Brain MRI', id: 3 },
-  //   { label: 'Chest x-ray', id: 4 },
-  //   { label: 'Spine MRI', id: 5 },
-  //   { label: 'CT Scan', id: 6 },
-  //   { label: 'Ultrasound', id: 7 },
-  //   { label: 'Mammography', id: 8 },
-  //   { label: 'Urinalysis', id: 9 },
-  //   { label: 'Urine pregnancy test', id: 10 },
-  //   { label: 'Lab Test-Cholesterol', id: 11 },
-  //   { label: 'Vaccine admin', id: 12 },
-  //   { label: 'Psychiatric diagnostic evaluation', id: 13 },
-  //   { label: 'Comprehensive eye exam for new patients', id: 14 },
-  //   { label: 'Allergy Testing', id: 15 },
-  //   { label: 'Medical Genetics counseling', id: 16 },
-  //   { label: 'Office visit-New patient', id: 17 },
-  //   { label: 'Office Visit- 10 Minutes', id: 18 },
-  //   { label: 'Office visit - 20 minutes', id: 19 },
-  //   { label: 'Office visit - 30 minutes', id: 20 },
-  //   { label: 'Preventive Exam ages 12-17', id: 21 },
-  //   { label: 'Preventive Exam age 18-39', id: 22 },
-  //   { label: 'Preventive Exam age 40-64', id: 23 },
-  //   { label: 'Preventive Exam age 65+', id: 24 }
-  // ];
-// Fetch procedures when component mounts
-useEffect(() => {
-  const fetchProcedures = async () => {
-    try {
-      const token = sessionStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/procedures', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setOptions(response.data.map(procedure => ({ label: procedure.procedure_name, id: procedure.id })));
-    } catch (error) {
-      console.error('Error fetching procedures:', error);
-    }
-  };
+  useEffect(() => {
+    const fetchProcedures = async () => {
+      try {
+        const token = sessionStorage.getItem('token');
+        const response = await axios.get('http://localhost:3000/procedures', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setOptions(response.data.map(procedure => ({ label: procedure.procedure_name, id: procedure.id })));
+      } catch (error) {
+        console.error('Error fetching procedures:', error);
+      }
+    };
 
-  fetchProcedures();
-}, []);
-
+    fetchProcedures();
+  }, []);
 
   const handleOptionChange = async (event, newValue) => {
     if (newValue) {

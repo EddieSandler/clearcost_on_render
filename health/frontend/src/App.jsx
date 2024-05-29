@@ -76,11 +76,10 @@ function AppContent({ isRegister, showRegisterForm, showLoginForm, isLoggedIn, h
             </ProtectedRoute>
           } />
           <Route path="/update-profile" element={
-  <ProtectedRoute isLoggedIn={isLoggedIn}>
-    <ProfileUpdateForm />
-  </ProtectedRoute>
-} />
-
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <ProfileUpdateForm />
+            </ProtectedRoute>
+          } />
         </Routes>
       </div>
     </>

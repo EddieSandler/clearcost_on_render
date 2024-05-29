@@ -41,22 +41,30 @@ const RegistrationForm = ({ handleLogin }) => {
         username,
         password,
         insuranceCompany,
-        copayment:copayment ||null,
-        coinsurance:coinsurance||null,
-        deductible:deductible||null
+        copayment: copayment || null,
+        coinsurance: coinsurance || null,
+        deductible: deductible || null
       });
       if (response.status === 200) {
-        handleLogin(); // Call handleLogin to navigate to the comparison page
-
-        // Clear all form fields after successful registration
-        setUsername('');
-        setPassword('');
-        setConfirmPassword('');
-        setInsuranceCompany('');
-        setCopayment('');
-        setCoinsurance('');
-        setDeductible('');
-        setError('');
+        const loginResponse = await axios.post('http://localhost:3000/login', {
+          username,
+          password
+        });
+        if (loginResponse.status === 200) {
+          const token = loginResponse.data.token;
+          sessionStorage.setItem('token', token);
+          handleLogin(); // Call handleLogin to navigate to the comparison page
+          setUsername('');
+          setPassword('');
+          setConfirmPassword('');
+          setInsuranceCompany('');
+          setCopayment('');
+          setCoinsurance('');
+          setDeductible('');
+          setError('');
+        } else {
+          setError('Login failed after registration');
+        }
       } else {
         setError('Registration failed');
       }
