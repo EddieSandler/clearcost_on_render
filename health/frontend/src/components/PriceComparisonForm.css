@@ -3,14 +3,16 @@ body, html {
   height: 100%;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+
+
 }
 
 .fullscreen-background {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('bill.jpg'); /* Use a semi-transparent black overlay */
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-blend-mode: overlay; /* Blend the overlay with the background image */
+  background-blend-mode: overlay;
   min-height: 100vh;
   width: 100vw;
   display: flex;
@@ -18,6 +20,7 @@ body, html {
   justify-content: center;
   background-color: #f4f4f4;
 }
+
 
 .formContainer {
   width: 80%;
@@ -31,6 +34,12 @@ body, html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
+  background-image:  url('bill.jpg');
+
 }
 
 /* ... rest of the CSS remains the same ... */
@@ -39,6 +48,9 @@ body, html {
   display: flex;
   justify-content: center;
   width: 100%;
+
+
+
 }
 
 .dark-textfield .MuiInputBase-input {
@@ -61,6 +73,7 @@ body, html {
   align-items: center;
   padding: 16px; /* Add padding to the card content */
   text-align: center;
+
 }
 
 .card-content .MuiTypography-root {
@@ -71,4 +84,8 @@ body, html {
   width: 100%;
   max-width: 300px;
   margin: 20px auto; /* Center align when there is only one card */
+}
+
+.price-comparison-heading {
+  font-weight: bold;
 }

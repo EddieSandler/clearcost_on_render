@@ -6,6 +6,7 @@ import { Card, CardContent, Typography, Grid, Checkbox, FormControlLabel, Contai
 import { useNavigate } from 'react-router-dom';
 import './PriceComparisonForm.css';
 
+
 const PriceComparisonForm = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [result, setResult] = useState(null);
@@ -126,7 +127,7 @@ const PriceComparisonForm = () => {
   return (
     <div className="fullscreen-background">
       <Container className="formContainer">
-        <Typography variant="h4" gutterBottom>Price Comparison</Typography>
+        <Typography variant="h3" gutterBottom className='price-comparison-heading'>Price Comparison</Typography>
         <div className="autocomplete-container">
           <Autocomplete
             disablePortal
@@ -175,7 +176,7 @@ const PriceComparisonForm = () => {
 
         {selectedCards.length > 0 && (
           <div style={{ marginTop: '20px' }}>
-            <Typography variant="h6">Comparison</Typography>
+            <Typography variant="h5">Comparison</Typography>
             {selectedCards.map((facilityName) => {
               const selectedFacility = result.find(item => item.facility_name === facilityName);
               return (
@@ -198,7 +199,7 @@ const PriceComparisonForm = () => {
               );
             })}
             {selectedCards.length === 2 && (
-              <Typography variant="h6" style={{ marginTop: '20px' }}>
+              <Typography variant="h5" style={{ marginTop: '20px' }}>
                 Price Difference: ${calculatePriceDifference()}
               </Typography>
             )}
