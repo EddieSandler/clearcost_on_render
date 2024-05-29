@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Container } from '@mui/material';
-import axios from 'axios';
-import './PriceComparisonForm.css'; // Ensure this CSS file is imported
+import React, { useState, useEffect } from "react";
+import { TextField, Button, Typography, Container } from "@mui/material";
+import axios from "axios";
+import "./PriceComparisonForm.css";
 
+//tregistration form for users and admins. There is a checkbox at the bottom of the form for admins
 const RegistrationForm = ({ handleLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [insuranceCompany, setInsuranceCompany] = useState('');
-  const [copayment, setCopayment] = useState('');
-  const [coinsurance, setCoinsurance] = useState('');
-  const [deductible, setDeductible] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [insuranceCompany, setInsuranceCompany] = useState("");
+  const [copayment, setCopayment] = useState("");
+  const [coinsurance, setCoinsurance] = useState("");
+  const [deductible, setDeductible] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Clear the form fields on component mount
   useEffect(() => {
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
-    setInsuranceCompany('');
-    setCopayment('');
-    setCoinsurance('');
-    setDeductible('');
-    setError('');
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
+    setInsuranceCompany("");
+    setCopayment("");
+    setCoinsurance("");
+    setDeductible("");
+    setError("");
   }, []);
 
   const handleCheckboxChange = (event) => {
@@ -42,46 +43,48 @@ const RegistrationForm = ({ handleLogin }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/register', {
+      const response = await axios.post("http://localhost:3000/register", {
         username,
         password,
         insuranceCompany,
-        copayment: copayment || null,
-        coinsurance: coinsurance || null,
-        deductible: deductible || null,
-        isAdmin
+        copayment: copayment || 0,
+        coinsurance: coinsurance || 0,
+        deductible: deductible || 0,
+        isAdmin,
       });
       if (response.status === 200) {
-        const loginResponse = await axios.post('http://localhost:3000/login', {
+        const loginResponse = await axios.post("http://localhost:3000/login", {
           username,
-          password
+          password,
         });
         if (loginResponse.status === 200) {
           const token = loginResponse.data.token;
-          sessionStorage.setItem('token', token);
+          sessionStorage.setItem("token", token);
           handleLogin(); // Call handleLogin to navigate to the comparison page
-          setUsername('');
-          setPassword('');
-          setConfirmPassword('');
-          setInsuranceCompany('');
-          setCopayment('');
-          setCoinsurance('');
-          setDeductible('');
-          setError('');
+          setUsername("");
+          setPassword("");
+          setConfirmPassword("");
+          setInsuranceCompany("");
+          setCopayment("");
+          setCoinsurance("");
+          setDeductible("");
+          setError("");
         } else {
-          setError('Login failed after registration');
+          setError("Login failed after registration");
         }
       } else {
-        setError('Registration failed');
+        setError("Registration failed");
       }
     } catch (error) {
-      setError('Registration failed');
+      setError("Registration failed");
     }
   };
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>Register</Typography>
+      <Typography variant="h4" gutterBottom>
+        Register
+      </Typography>
       {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
         <TextField
@@ -149,20 +152,20 @@ const RegistrationForm = ({ handleLogin }) => {
           onChange={(e) => setDeductible(e.target.value)}
           className="dark-textfield"
         />
-<div>
-<label>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={isAdmin}
+              onChange={handleCheckboxChange}
+            />
+            Admin
+          </label>
+        </div>
 
-        <input
-          type="checkbox"
-          checked={isAdmin}
-          onChange={handleCheckboxChange}
-        />
-        Admin
-
-      </label>
-      </div>
-
-        <Button type="submit" variant="contained" color="primary">Register</Button>
+        <Button type="submit" variant="contained" color="primary">
+          Register
+        </Button>
       </form>
     </Container>
   );

@@ -4,6 +4,8 @@ import { TextField, Button, Typography, Container } from '@mui/material';
 import axios from 'axios';
 import './PriceComparisonForm.css'; // Ensure this CSS file is imported
 
+
+//accepts user input and sends to backend for validation
 const LoginForm = ({ handleLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,6 +15,7 @@ const LoginForm = ({ handleLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // makes request to the backend to log in - stores JWT in session storage
     try {
       const response = await axios.post('http://localhost:3000/login', { username, password });
       if (response.status === 200) {
@@ -26,7 +29,7 @@ const LoginForm = ({ handleLogin }) => {
         setPassword('');
         setError('');
 
-        // Navigate to the Price Comparison page
+        // upon successful login  Navigate to the Price Comparison page
         navigate('/compare');
       } else {
         setError('Login failed');

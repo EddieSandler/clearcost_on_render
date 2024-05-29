@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Container, Typography, Card, CardContent, CircularProgress, Grid, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import './PriceComparisonForm.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  CircularProgress,
+  Grid,
+  Button,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import "./PriceComparisonForm.css";
 
+//this form is designed to display all selected procedures used in a price comparison
 const SavedComparisons = () => {
   const [comparisons, setComparisons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,30 +20,33 @@ const SavedComparisons = () => {
 
   useEffect(() => {
     const fetchComparisons = async () => {
-      const token = sessionStorage.getItem('token');
-      console.log('Retrieved token:', token);
+      const token = sessionStorage.getItem("token");
+      console.log("Retrieved token:", token);
       if (!token) {
-        alert('Please log in to view saved procedures');
+        alert("Please log in to view saved procedures");
         setLoading(false);
         return;
       }
 
       try {
-        const response = await axios.get('http://localhost:3000/get-comparisons', {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.get(
+          "http://localhost:3000/get-comparisons",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
+        );
 
-        console.log('API Response:', response.data);
+        console.log("API Response:", response.data);
         if (response.status === 200) {
           setComparisons(response.data.comparisons);
         } else {
-          alert('Failed to retrieve saved  procedures');
+          alert("Failed to retrieve saved  procedures");
         }
       } catch (error) {
-        console.error('Error retrieving saved procedures:', error);
-        alert('Failed to retrieve saved procedures');
+        console.error("Error retrieving saved procedures:", error);
+        alert("Failed to retrieve saved procedures");
       } finally {
         setLoading(false);
       }
@@ -44,28 +56,31 @@ const SavedComparisons = () => {
   }, []);
 
   const deleteAllComparisons = async () => {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     if (!token) {
-      alert('Please log in to delete saved procedures');
+      alert("Please log in to delete saved procedures");
       return;
     }
 
     try {
-      const response = await axios.delete('http://localhost:3000/delete-all-comparisons', {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const response = await axios.delete(
+        "http://localhost:3000/delete-all-comparisons",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       if (response.status === 200) {
-        alert('All saved procedures will be deleted');
+        alert("All saved procedures will be deleted");
         setComparisons([]);
       } else {
-        alert('Failed to delete saved procedures');
+        alert("Failed to delete saved procedures");
       }
     } catch (error) {
-      console.error('Error deleting saved procedures:', error);
-      alert('Failed to delete saved procedures');
+      console.error("Error deleting saved procedures:", error);
+      alert("Failed to delete saved procedures");
     }
   };
 
@@ -76,9 +91,11 @@ const SavedComparisons = () => {
   return (
     <div className="formContainer">
       <Container>
-        <Typography variant="h4" gutterBottom>Saved Procedures</Typography>
-        {(!Array.isArray(comparisons) || comparisons.length === 0) ? (
-          <div style={{ textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          Saved Procedures
+        </Typography>
+        {!Array.isArray(comparisons) || comparisons.length === 0 ? (
+          <div style={{ textAlign: "center" }}>
             <Typography variant="h6">No saved procedures available.</Typography>
           </div>
         ) : (
@@ -106,17 +123,17 @@ const SavedComparisons = () => {
               variant="contained"
               color="secondary"
               onClick={deleteAllComparisons}
-              style={{ marginTop: '20px' }}
+              style={{ marginTop: "20px" }}
             >
               Delete
             </Button>
           </>
         )}
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate('/compare')}
+            onClick={() => navigate("/compare")}
           >
             Back
           </Button>

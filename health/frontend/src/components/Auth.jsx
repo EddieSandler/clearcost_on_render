@@ -3,8 +3,9 @@ import { Container, Typography, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
-import './Auth.css'; // Import the CSS file
+import './Auth.css';
 
+//toggles between the login form and registration form 
 const Auth = ({ isRegister, handleLogin, showRegisterForm, showLoginForm }) => {
   const navigate = useNavigate();
 
