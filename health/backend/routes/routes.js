@@ -48,7 +48,7 @@ router.post('/register', async (req, res) => {
     const password_hash = await bcrypt.hash(password, 10); // Hash the password
     const result = await db.query(
       'INSERT INTO users (username, password_hash, insurance_company, copayment, coinsurance, deductible, "isAdmin") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [username, password_hash, insuranceCompany, copayment, coinsurance, deductible, false ]
+      [username, password_hash, insuranceCompany, copayment, coinsurance, deductible, isAdmin ]
     );
 
     res.status(200).send(result.rows[0]);
@@ -168,13 +168,13 @@ router.delete('/delete-all-comparisons', async (req, res) => {
 });
 
 router.put('/update-profile', authenticateToken, async (req, res) => {
-  const { insuranceCompany, copayment, coinsurance } = req.body;
+  const { insuranceCompany, copayment, coinsurance,deductible } = req.body;
   const userId = req.user.id;
 
   try {
     const result = await db.query(
-      'UPDATE users SET insurance_company = $1, copayment = $2, coinsurance = $3 WHERE id = $4 RETURNING *',
-      [insuranceCompany, copayment, coinsurance, userId]
+      'UPDATE users SET insurance_company = $1, copayment = $2, coinsurance = $3, deductible = $4 WHERE id = $5 RETURNING *',
+      [insuranceCompany, copayment, coinsurance,deductible, userId]
     );
 
     if (result.rows.length === 0) {
