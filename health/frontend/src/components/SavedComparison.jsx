@@ -74,7 +74,7 @@ const SavedComparisons = () => {
   }
 
   return (
-    <div className="fullscreen-background">
+    <div className="formContainer">
       <Container>
         <Typography variant="h4" gutterBottom>Saved Procedures</Typography>
         {(!Array.isArray(comparisons) || comparisons.length === 0) ? (

@@ -41,7 +41,7 @@ const ProfileUpdateForm = () => {
   };
 
   return (
-    <Container>
+    <Container className="formContainer">
       <Typography variant="h4" gutterBottom>Update Profile</Typography>
       {message && <Typography color="secondary">{message}</Typography>}
       <form onSubmit={handleSubmit}>
