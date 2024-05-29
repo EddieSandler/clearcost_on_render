@@ -134,7 +134,7 @@ const PriceComparisonForm = () => {
             options={options}
             getOptionLabel={(option) => option.label}
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => <TextField {...params} label="Choose an option" />}
+            renderInput={(params) => <TextField {...params} label="Choose an option" className="dark-textfield"/>}
             style={{ width: 300 }}
             onChange={handleOptionChange}
             value={selectedOption}
@@ -202,14 +202,14 @@ const PriceComparisonForm = () => {
                 Price Difference: ${calculatePriceDifference()}
               </Typography>
             )}
-            <Button variant="contained" color="primary" onClick={saveComparison} style={{ marginTop: '20px' }}>
+            <Button variant="contained" color="primary" onClick={saveComparison} style={{ marginTop: '20px' }} className="MuiButton-root">
               Save Procedure
             </Button>
           </div>
         )}
 
         {(selectedOption || selectedCards.length > 0) && (
-          <Button variant="contained" color="secondary" onClick={clearSelection} style={{ marginTop: '20px' }}>
+          <Button variant="contained" color="secondary" onClick={clearSelection} style={{ marginTop: '20px' }}className="MuiButton-root">
             Clear Selection
           </Button>
         )}
@@ -218,7 +218,7 @@ const PriceComparisonForm = () => {
           variant="contained"
           color="primary"
           onClick={() => navigate('/saved-comparisons')} // Navigate to saved comparisons
-          style={{ marginTop: '20px' }}
+          style={{ marginTop: '20px' }} className="MuiButton-root"
         >
           View Previous Searches
         </Button>
