@@ -94,13 +94,13 @@ const PriceComparisonForm = () => {
       });
 
       if (response.status === 200) {
-        alert('Comparison saved successfully');
+        alert('Procedures saved successfully');
       } else {
-        alert('Failed to save comparison');
+        alert('Failed to save procedures');
       }
     } catch (error) {
-      console.error('Error saving comparison:', error);
-      alert('Failed to save comparison');
+      console.error('Error saving procedures:', error);
+      alert('Failed to save procedures');
     }
   };
 
