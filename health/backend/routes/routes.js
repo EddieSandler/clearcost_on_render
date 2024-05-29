@@ -260,7 +260,7 @@ router.get('/procedures', async (req, res) => {
 
 
 
-// Endpoint to update procedure, facility, and price
+// Endpoints to update procedure, facility, and price
 router.put('/update-procedure/:id', authenticateToken, checkAdmin, async (req, res) => {
   const procedureId = parseInt(req.params.id);
   const { cpt_code, procedure_name } = req.body;
@@ -321,6 +321,62 @@ router.put('/update-price/:id', authenticateToken, checkAdmin, async (req, res) 
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+//endpoint to delete a procedure and associated data
+router.delete('/delete-procedure/:procedureId', authenticateToken, checkAdmin, async (req, res) => {
+  const { procedureId } = req.params;
+
+  try {
+    // Begin transaction
+    await db.query('BEGIN');
+
+    // Delete from pricing
+    await db.query(
+      `DELETE FROM pricing WHERE procedure_id = $1`,
+      [procedureId]
+    );
+
+    // Find the facility_id(s) associated with this procedure
+    const facilityResult = await db.query(
+      `SELECT facility_id FROM pricing WHERE procedure_id = $1`,
+      [procedureId]
+    );
+
+    // Delete from facilities if no other pricing references them
+    for (const row of facilityResult.rows) {
+      const countResult = await db.query(
+        `SELECT COUNT(*) FROM pricing WHERE facility_id = $1`,
+        [row.facility_id]
+      );
+
+      if (parseInt(countResult.rows[0].count) === 0) {
+        await db.query(
+          `DELETE FROM facilities WHERE id = $1`,
+          [row.facility_id]
+        );
+      }
+    }
+
+    // Delete from procedures
+    await db.query(
+      `DELETE FROM procedures WHERE id = $1`,
+      [procedureId]
+    );
+
+    // Commit transaction
+    await db.query('COMMIT');
+
+    res.status(200).json({ message: 'Procedure, facility, and pricing deleted successfully' });
+  } catch (error) {
+    // Rollback transaction on error
+    await db.query('ROLLBACK');
+    console.error('Error deleting procedure, facility, and pricing:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 
 
 module.exports = router;
