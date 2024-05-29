@@ -144,8 +144,8 @@ const PriceComparisonForm = () => {
         <Grid container spacing={3} style={{ marginTop: '20px' }}>
           {result && result.map((item) => (
             <Grid item xs={12} sm={6} md={4} key={item.facility_name}>
-              <Card variant="outlined">
-                <CardContent>
+              <Card variant="outlined" className="card">
+                <CardContent className="card-content">
                   <Typography variant="h5" component="div">
                     {item.procedure_name}
                   </Typography>
@@ -179,8 +179,8 @@ const PriceComparisonForm = () => {
             {selectedCards.map((facilityName) => {
               const selectedFacility = result.find(item => item.facility_name === facilityName);
               return (
-                <Card variant="outlined" key={facilityName} style={{ marginTop: '10px' }}>
-                  <CardContent>
+                <Card variant="outlined" key={facilityName} style={{ marginTop: '10px' }} className="card">
+                  <CardContent className="card-content">
                     <Typography variant="h5" component="div">
                       {selectedFacility.procedure_name}
                     </Typography>

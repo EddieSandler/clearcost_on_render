@@ -123,7 +123,7 @@ const RegistrationForm = ({ handleLogin }) => {
           className="dark-textfield"
         />
         <TextField
-          label="Copayment %"
+          label="Copayment $"
           variant="outlined"
           fullWidth
           margin="normal"
@@ -132,7 +132,7 @@ const RegistrationForm = ({ handleLogin }) => {
           className="dark-textfield"
         />
         <TextField
-          label="Co-insurance ($ or %)"
+          label="Co-insurance (%)"
           variant="outlined"
           fullWidth
           margin="normal"
