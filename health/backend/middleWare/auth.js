@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require("../config");
 
+
+//authenticates JWT for  all routes
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -18,6 +20,8 @@ const authenticateToken = (req, res, next) => {
     res.status(400).send('Invalid Token');
   }
 };
+
+//authentication for Admin users, used for all Admin endpoints
 
 const checkAdmin = (req, res, next) => {
   if (!req.user.isAdmin) {

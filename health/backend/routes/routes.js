@@ -9,6 +9,8 @@ const { authenticateToken, checkAdmin } = require('../middleWare/auth.js');
 
 router.use(cors());
 
+
+//  endpoint for to log in authenticated users.
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -18,12 +20,15 @@ router.post('/login', async (req, res) => {
       return res.status(400).send('User not found');
     }
     const user = result.rows[0];
+
+    //hashes password and compares to  hashed password in db
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
       return res.status(400).send('Invalid Credentials');
     }
 
+    // payload for JSON web token
     const token = jwt.sign({
       id: user.id,
       username: user.username,
@@ -42,6 +47,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+//endpoint for user registration. User has option to register as admin
 router.post('/register', async (req, res) => {
   const { username, password, insuranceCompany, copayment, coinsurance, deductible,isAdmin } = req.body;
   try {
@@ -64,13 +70,13 @@ router.use(authenticateToken);
 
 
 
+//endpoint to compare the price of a medical procedure across medical facilities
 
 router.get('/compare', async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { procedureId } = req.query;
-  console.log('Comparison endpoint works Dude!');
 
-  if (!procedureId || isNaN(parseInt(procedureId))) {
+    if (!procedureId || isNaN(parseInt(procedureId))) {
     return res.status(400).json({ error: "Invalid or missing procedureId" });
   }
 
@@ -106,6 +112,7 @@ router.get('/compare', async (req, res) => {
   }
 });
 
+//endpoint allowing user to save  selected procedures in the database
 router.post('/save-comparison', async (req, res) => {
   const { comparison } = req.body;
   const userId = req.user.id;
@@ -120,13 +127,14 @@ router.post('/save-comparison', async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json({ message: 'Comparison saved successfully', user: result.rows[0] });
+    res.json({ message: 'Procedures saved successfully', user: result.rows[0] });
   } catch (err) {
-    console.error('Error saving comparison:', err);
+    console.error('Error saving procedures:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+//endpoint retrives any saved procedures on login
 router.get('/get-comparisons', async (req, res) => {
   const userId = req.user.id;
 
@@ -147,6 +155,7 @@ router.get('/get-comparisons', async (req, res) => {
   }
 });
 
+//endpoint to delete any stored procedures from the database
 router.delete('/delete-all-comparisons', async (req, res) => {
   const userId = req.user.id;
 
@@ -160,13 +169,14 @@ router.delete('/delete-all-comparisons', async (req, res) => {
       return res.status(404).json({ error: 'User not found or no comparisons to delete' });
     }
 
-    res.json({ message: 'All comparisons deleted successfully', user: result.rows[0] });
+    res.json({ message: 'All procedures deleted successfully', user: result.rows[0] });
   } catch (err) {
-    console.error('Error deleting all comparisons:', err);
+    console.error('Error deleting all procedures:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+//endpoint that allows user to change insurance company,copayment,coinsurance and deductible
 router.put('/update-profile', authenticateToken, async (req, res) => {
   const { insuranceCompany, copayment, coinsurance,deductible } = req.body;
   const userId = req.user.id;
@@ -190,7 +200,7 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
 
 //the following endpoints are restricted to admin users.
 
-
+//endpoint currently used to test if a user is an admin
 router.post('/admin',authenticateToken, checkAdmin, async (req, res, next) => {
 
   try {
@@ -202,7 +212,7 @@ router.post('/admin',authenticateToken, checkAdmin, async (req, res, next) => {
   }
 });
 
-//admins can add procedures,facilities,and prices
+//endpoint allowing admins to add procedure,facility,and price
 router.post('/add-procedure', authenticateToken, checkAdmin, async (req, res) => {
   const { cpt_code, procedure_name, facility_name, price } = req.body;
 
@@ -218,7 +228,7 @@ router.post('/add-procedure', authenticateToken, checkAdmin, async (req, res) =>
     );
     const procedureId = procedureResult.rows[0].id;
 
-    // Add or retrieve facility
+    // Add  facility
     const facilityResult = await db.query(
       `INSERT INTO facilities (facility_name)
        VALUES ($1)
@@ -247,6 +257,8 @@ router.post('/add-procedure', authenticateToken, checkAdmin, async (req, res) =>
 });
 
 //endpoint to dynamically fetch all procedures when  front end pricecomparison form mounts
+//these procedures use state
+
 router.get('/procedures', async (req, res) => {
   try {
     const result = await db.query('SELECT id, procedure_name FROM procedures');
@@ -323,7 +335,7 @@ router.put('/update-price/:id', authenticateToken, checkAdmin, async (req, res) 
 });
 
 
-//endpoint to delete a procedure and associated data
+//endpoint for admin to delete a procedure and associated data
 router.delete('/delete-procedure/:procedureId', authenticateToken, checkAdmin, async (req, res) => {
   const { procedureId } = req.params;
 
