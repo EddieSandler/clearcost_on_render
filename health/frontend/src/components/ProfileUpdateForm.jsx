@@ -8,6 +8,7 @@ const ProfileUpdateForm = () => {
   const [insuranceCompany, setInsuranceCompany] = useState('');
   const [copayment, setCopayment] = useState('');
   const [coinsurance, setCoinsurance] = useState('');
+  const [deductible, setDeductible] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate()
 
@@ -19,7 +20,8 @@ const ProfileUpdateForm = () => {
       const response = await axios.put('http://localhost:3000/update-profile', {
         insuranceCompany,
         copayment,
-        coinsurance
+        coinsurance,
+        deductible
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -51,7 +53,7 @@ const ProfileUpdateForm = () => {
           onChange={(e) => setInsuranceCompany(e.target.value)}
         />
         <TextField
-          label="Copayment"
+          label="Copayment $"
           variant="outlined"
           fullWidth
           margin="normal"
@@ -60,13 +62,22 @@ const ProfileUpdateForm = () => {
           onChange={(e) => setCopayment(e.target.value)}
         />
         <TextField
-          label="Coinsurance"
+          label="Coinsurance %"
           variant="outlined"
           fullWidth
           margin="normal"
           type="number"
           value={coinsurance}
           onChange={(e) => setCoinsurance(e.target.value)}
+        />
+         <TextField
+          label="Deductible"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="number"
+          value={deductible}
+          onChange={(e) => setDeductible(e.target.value)}
         />
         <Button type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>Update Profile</Button>
       </form>
