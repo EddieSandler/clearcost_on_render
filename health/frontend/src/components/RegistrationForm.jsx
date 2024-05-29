@@ -11,6 +11,7 @@ const RegistrationForm = ({ handleLogin }) => {
   const [copayment, setCopayment] = useState('');
   const [coinsurance, setCoinsurance] = useState('');
   const [deductible, setDeductible] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState('');
 
   // Clear the form fields on component mount
@@ -24,6 +25,10 @@ const RegistrationForm = ({ handleLogin }) => {
     setDeductible('');
     setError('');
   }, []);
+
+  const handleCheckboxChange = (event) => {
+    setIsAdmin(event.target.checked);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +48,8 @@ const RegistrationForm = ({ handleLogin }) => {
         insuranceCompany,
         copayment: copayment || null,
         coinsurance: coinsurance || null,
-        deductible: deductible || null
+        deductible: deductible || null,
+        isAdmin
       });
       if (response.status === 200) {
         const loginResponse = await axios.post('http://localhost:3000/login', {
@@ -143,6 +149,19 @@ const RegistrationForm = ({ handleLogin }) => {
           onChange={(e) => setDeductible(e.target.value)}
           className="dark-textfield"
         />
+<div>
+<label>
+
+        <input
+          type="checkbox"
+          checked={isAdmin}
+          onChange={handleCheckboxChange}
+        />
+        Admin
+
+      </label>
+      </div>
+
         <Button type="submit" variant="contained" color="primary">Register</Button>
       </form>
     </Container>
