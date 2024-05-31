@@ -80,33 +80,34 @@ Create the dump file:
 Open your terminal and run the following command to create a dump of your database:
 
 bash
-Copy code
 
 ```pg_dump -U your_username -h your_host -F c -b -v -f clearcost_health.dump your_database_name```
 
 Replace your_username, your_host, and your_database_name``` with your PostgreSQL username, host, and database name, respectively. The -F c flag specifies the custom format, which is suitable for backups.
 
-Restoring the Database Dump
+### Restoring the Database Dump
+
 To restore the database on the client side, follow these directions:
 
 Ensure you have pg_restore installed:
 pg_restore is a utility for restoring a PostgreSQL database from an archive created by pg_dump.
 
-Download the dump file:
-Ensure that the dump file (clearcost_health.dump) is available on the client machine.
+### Download the dump file
 
-Create the database:
+Ensure that the dump file (medical_pricing_dump.sql) is available on the client machine.
+
+### Create the database
+
 Before restoring, you need to create an empty database in PostgreSQL. Open your terminal and run:
 
 ```bash
-Copy code
+
 createdb -U your_username -h your_host new_database_name
 Replace your_username, your_host, and new_database_name with your PostgreSQL username, host, and the name of the new database. ```
 
 Restore the dump file:
 
 ``` bash
-Copy code
-pg_restore -U your_username -h your_host -d new_database_name -v clearcost_health.dump```
+pg_restore -U your_username -h your_host -d new_database_name -v medical_pricing_dump.sql```
 
 Replace your_username, your_host, and new_database_name with your PostgreSQL username, host, and the name of the new database.
