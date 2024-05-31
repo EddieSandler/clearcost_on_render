@@ -51,6 +51,7 @@ const ProfileUpdateForm = () => {
           fullWidth
           margin="normal"
           value={insuranceCompany}
+          className="dark-textfield"
           onChange={(e) => setInsuranceCompany(e.target.value)}
         />
         <TextField
@@ -59,6 +60,7 @@ const ProfileUpdateForm = () => {
           fullWidth
           margin="normal"
           type="number"
+          className="dark-textfield"
           value={copayment}
           onChange={(e) => setCopayment(e.target.value)}
         />
@@ -68,15 +70,17 @@ const ProfileUpdateForm = () => {
           fullWidth
           margin="normal"
           type="number"
+          className="dark-textfield"
           value={coinsurance}
           onChange={(e) => setCoinsurance(e.target.value)}
         />
          <TextField
-          label="Deductible"
+          label="Deductible $"
           variant="outlined"
           fullWidth
           margin="normal"
           type="number"
+          className="dark-textfield"
           value={deductible}
           onChange={(e) => setDeductible(e.target.value)}
         />

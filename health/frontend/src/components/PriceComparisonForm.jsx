@@ -196,7 +196,7 @@ const PriceComparisonForm = () => {
                       Price: ${item.price}
                     </Typography>
                     <Typography variant="body2">
-                      Price with Co-Insurance: $
+                      Your Estimated Co-Insurance cost: $
                       {multiplyByCoinsurance(item.price)}
                     </Typography>
                     <FormControlLabel
@@ -239,7 +239,7 @@ const PriceComparisonForm = () => {
                       Price: ${selectedFacility.price}
                     </Typography>
                     <Typography variant="body2">
-                      Price with Co-Insurance: $
+                      Your Estimated Co-Insurance Expense: $
                       {multiplyByCoinsurance(selectedFacility.price)}
                     </Typography>
                   </CardContent>
