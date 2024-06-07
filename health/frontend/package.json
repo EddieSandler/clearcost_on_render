@@ -1,5 +1,5 @@
 {
-  "name": "medical_pricing",
+  "name": "medical_pricing_frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,19 +8,13 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start:": "serve -s dist"
+    "start": "serve -s dist"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.17",
     "axios": "^1.6.8",
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.11.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "serve": "^14.2.3"
@@ -29,12 +23,9 @@
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
-    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.6",
-    "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "vite": "^5.2.11"
   },
