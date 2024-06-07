@@ -9,7 +9,7 @@ let db = new Client({
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT || 5432,  // Default port for PostgreSQL
+  port: process.env.DB_PORT || 3000  // Default port for PostgreSQL
 });
 
 db.connect(err => {

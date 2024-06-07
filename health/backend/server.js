@@ -7,9 +7,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const apiRouter = require('./routes/routes'); // adjust the path as necessary
 
 app.use(apiRouter);
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+const PORT = process.env.PORT ||3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port:${PORT}`);
 });
 
 module.exports=app;
