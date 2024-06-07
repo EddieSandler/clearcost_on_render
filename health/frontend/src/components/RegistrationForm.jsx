@@ -43,7 +43,7 @@ const RegistrationForm = ({ handleLogin }) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
+      const response = await axios.post("https://backend-service-rjwj.onrender.com/register", {
         username,
         password,
         insuranceCompany,
@@ -53,7 +53,7 @@ const RegistrationForm = ({ handleLogin }) => {
         isAdmin,
       });
       if (response.status === 200) {
-        const loginResponse = await axios.post("http://localhost:3000/login", {
+        const loginResponse = await axios.post("login", {
           username,
           password,
         });

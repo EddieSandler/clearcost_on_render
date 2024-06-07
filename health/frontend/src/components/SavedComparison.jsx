@@ -30,7 +30,7 @@ const SavedComparisons = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost:3000/get-comparisons",
+          "https://backend-service-rjwj.onrender.comget-comparisons",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ const SavedComparisons = () => {
 
     try {
       const response = await axios.delete(
-        "http://localhost:3000/delete-all-comparisons",
+        "https://backend-service-rjwj.onrender.comdelete-all-comparisons",
         {
           headers: {
             Authorization: `Bearer ${token}`,

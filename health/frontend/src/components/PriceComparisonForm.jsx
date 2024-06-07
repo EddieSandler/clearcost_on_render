@@ -29,7 +29,7 @@ const PriceComparisonForm = () => {
     const fetchProcedures = async () => {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.get("http://localhost:3000/procedures", {
+        const response = await axios.get("https://backend-service-rjwj.onrender.comprocedures", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,7 +53,7 @@ const PriceComparisonForm = () => {
       setSelectedOption(newValue);
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.get("http://localhost:3000/compare", {
+        const response = await axios.get("https://backend-service-rjwj.onrender.comcompare", {
           params: { procedureId: newValue.id },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ const PriceComparisonForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/save-comparison",
+        "https://backend-service-rjwj.onrender.comsave-comparison",
         {
           comparison,
         },

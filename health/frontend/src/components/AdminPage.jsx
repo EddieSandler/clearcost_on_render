@@ -13,7 +13,7 @@ const AdminPage = () => {
 
   const handleAddProcedure = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/add-procedure', {
+      const response = await axios.post('https://backend-service-rjwj.onrender.comadd-procedure', {
         cpt_code: cptCode,
         procedure_name: procedureName,
         facility_name: facilityName,
@@ -27,7 +27,7 @@ const AdminPage = () => {
 
   const handleUpdateProcedure = async () => {
     try {
-      const response = await axios.put(`http://localhost:3000/update-procedure/${procedureId}`, {
+      const response = await axios.put(`https://backend-service-rjwj.onrender.comupdate-procedure/${procedureId}`, {
         cpt_code: cptCode,
         procedure_name: procedureName
       });
@@ -39,7 +39,7 @@ const AdminPage = () => {
 
   const handleUpdateFacility = async () => {
     try {
-      const response = await axios.put(`http://localhost:3000/update-facility/${facilityId}`, {
+      const response = await axios.put(`https://backend-service-rjwj.onrender.comupdate-facility/${facilityId}`, {
         facility_name: facilityName
       });
       console.log(response.data);
@@ -50,7 +50,7 @@ const AdminPage = () => {
 
   const handleUpdatePrice = async () => {
     try {
-      const response = await axios.put(`http://localhost:3000/update-price/${pricingId}`, {
+      const response = await axios.put(`https://backend-service-rjwj.onrender.comupdate-price/${pricingId}`, {
         procedure_id: procedureId,
         facility_id: facilityId,
         price: price
@@ -63,7 +63,7 @@ const AdminPage = () => {
 
   const handleDeleteProcedure = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3000/delete-procedure/${procedureId}`);
+      const response = await axios.delete(`https://backend-service-rjwj.onrender.comdelete-procedure/${procedureId}`);
       console.log(response.data);
     } catch (error) {
       console.error('Error deleting procedure:', error);

@@ -18,7 +18,7 @@ const ProfileUpdateForm = () => {
     const token = sessionStorage.getItem('token');
 
     try {
-      const response = await axios.put('http://localhost:3000/update-profile', {
+      const response = await axios.put('https://backend-service-rjwj.onrender.comupdate-profile', {
         insuranceCompany,
         copayment,
         coinsurance,
