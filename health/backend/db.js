@@ -1,11 +1,15 @@
 const { Client } = require("pg");
+require('dotenv').config();
 
 // Assuming 'medical_pricing' is indeed your database name
 let dbName = "medical_pricing";
 
 let db = new Client({
-  host: "/var/run/postgresql",  // Path to the directory containing the socket file
-  database: dbName  // Database name
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT || 5432,  // Default port for PostgreSQL
 });
 
 db.connect(err => {
