@@ -4,7 +4,8 @@ const db = require('../db');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const { SECRET_KEY } = require("../config");
+// const { SECRET_KEY } = require("../config");
+const SECRET_KEY = process.env.SECRET_KEY;
 const { authenticateToken, checkAdmin } = require('../middleWare/auth.js');
 
 router.use(cors());
