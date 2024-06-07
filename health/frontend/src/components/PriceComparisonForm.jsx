@@ -29,7 +29,7 @@ const PriceComparisonForm = () => {
     const fetchProcedures = async () => {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.get("https://backend-service-rjwj.onrender.comprocedures", {
+        const response = await axios.get("https://backend-service-rjwj.onrender.com/procedures", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
