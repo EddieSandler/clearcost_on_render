@@ -105,7 +105,7 @@ const PriceComparisonForm = () => {
 
     try {
       const response = await axios.post(
-        "https://backend-service-rjwj.onrender.comsave-comparison",
+        "https://backend-service-rjwj.onrender.com/save-comparison",
         {
           comparison,
         },
