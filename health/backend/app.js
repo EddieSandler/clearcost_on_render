@@ -7,7 +7,8 @@ const db = require('./db'); // Ensure this is properly set up
 const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const { SECRET_KEY } = require("../config");
+// const { SECRET_KEY } = require("../config");
+const SECRET_KEY = process.env.SECRET_KEY;
 
 // Middleware
 app.use(bodyParser.json());
