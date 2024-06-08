@@ -14,6 +14,7 @@ router.use(cors());
 
 //  endpoint for to log in authenticated users.
 router.post('/login', async (req, res) => {
+  console.log('login started')
   const { username, password } = req.body;
 
   try {
@@ -21,6 +22,7 @@ router.post('/login', async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(400).send('User not found');
     }
+    console.log('checking token')
     const user = result.rows[0];
 
     //hashes password and compares to  hashed password in db

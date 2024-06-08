@@ -9,8 +9,10 @@ const { SECRET_KEY } = require("../config");
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
+  console.log('authentication started')
 
   if (!token) {
+    console.log('auth failing')
     return res.status(401).send('Access Denied');
   }
 
@@ -20,6 +22,7 @@ const authenticateToken = (req, res, next) => {
     console.log('Authenticated user: ', req.user);
     next();
   } catch (err) {
+    console.log('invalid token')
     res.status(400).send('Invalid Token');
   }
 };
