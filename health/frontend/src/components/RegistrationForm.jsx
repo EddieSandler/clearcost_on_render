@@ -40,9 +40,7 @@ const RegistrationForm = ({ handleLogin }) => {
     if (password !== confirmPassword) {
       setError("Passwords don't match");
       return;
-    }
-
-    try {
+    } try {
       const response = await axios.post("https://backend-service-rjwj.onrender.com/register", {
         username,
         password,
@@ -53,32 +51,20 @@ const RegistrationForm = ({ handleLogin }) => {
         isAdmin,
       });
       if (response.status === 200) {
-        const loginResponse = await axios.post("login", {
-          username,
-          password,
-        });
-        if (loginResponse.status === 200) {
-          const token = loginResponse.data.token;
-          sessionStorage.setItem("token", token);
-          handleLogin(); // Call handleLogin to navigate to the comparison page
-          setUsername("");
-          setPassword("");
-          setConfirmPassword("");
-          setInsuranceCompany("");
-          setCopayment("");
-          setCoinsurance("");
-          setDeductible("");
-          setError("");
-        } else {
-          setError("Login failed after registration");
-        }
+        const { user, token } = response.data;
+        // Store the JWT token in session storage or local storage
+        sessionStorage.setItem("token", token);
+        // Call handleLogin to navigate to the comparison page
+        handleLogin();
+        // Clear form fields and error state
+        // ...
       } else {
         setError("Registration failed");
       }
     } catch (error) {
       setError("Registration failed");
     }
-  };
+
 
   return (
     <Container>
@@ -170,5 +156,5 @@ const RegistrationForm = ({ handleLogin }) => {
     </Container>
   );
 };
-
+}
 export default RegistrationForm;
