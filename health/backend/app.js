@@ -23,7 +23,7 @@ app.use(
         secure: true, // Set to true for HTTPS connections
         httpOnly: true, // Prevent client-side script from accessing the cookie
         domain: 'https://backend-service-rjwj.onrender.com', // Replace with your backend domain
-        sameSite: 'strict', // Strict or lax based on your requirements
+        sameSite: 'lax', // Strict or lax based on your requirements
       },
     })
   );
