@@ -41,7 +41,7 @@ const RegistrationForm = ({ handleLogin }) => {
       setError("Passwords don't match");
       return;
     } try {
-      const response = await axios.post("https://backend-service-rjwj.onrender.com/register", {
+      const response = await axios.post("https://backend-service-rjwj.onrender.com/api/register", {
         username,
         password,
         insuranceCompany,
