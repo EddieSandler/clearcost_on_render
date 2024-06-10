@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography, Container } from "@mui/material";
 import axios from "axios";
 import "./PriceComparisonForm.css";
-const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
-
+// const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
+const BASE_URL="https://backend-service-rjwj.onrender.com/"
 
 //tregistration form for users and admins. There is a checkbox at the bottom of the form for admins
 const RegistrationForm = ({ handleLogin }) => {
