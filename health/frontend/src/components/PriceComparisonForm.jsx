@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./PriceComparisonForm.css";
-const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
+const BASE_URL="https://backend-service-rjwj.onrender.com"
 
 
 //this form is designed to allow users to select procedures form different facilities
