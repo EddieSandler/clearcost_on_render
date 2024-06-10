@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container } from '@mui/material';
 import axios from 'axios';
 import './PriceComparisonForm.css'; // Ensure this CSS file is imported
-
+const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
 
 //accepts user input and sends to backend for validation
 const LoginForm = ({ handleLogin }) => {
@@ -17,7 +17,7 @@ const LoginForm = ({ handleLogin }) => {
 
     // makes request to the backend to log in - stores JWT in session storage
     try {
-      const response = await axios.post('https://backend-service-rjwj.onrender.com/api/login', { username, password });
+      const response = await axios.post(`${BASE_URL}/api/login`, { username, password });
       if (response.status === 200) {
         const token = response.data.token;
         sessionStorage.setItem('token', token);

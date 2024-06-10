@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./PriceComparisonForm.css";
+const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
+
 
 //this form is designed to allow users to select procedures form different facilities
 // and compare prices
@@ -29,7 +31,7 @@ const PriceComparisonForm = () => {
     const fetchProcedures = async () => {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.get("https://backend-service-rjwj.onrender.com/api/procedures", {
+        const response = await axios.get(`${BASE_URL}/api/procedures`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

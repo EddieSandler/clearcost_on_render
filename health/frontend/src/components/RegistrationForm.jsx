@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography, Container } from "@mui/material";
 import axios from "axios";
 import "./PriceComparisonForm.css";
+const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
+
 
 //tregistration form for users and admins. There is a checkbox at the bottom of the form for admins
 const RegistrationForm = ({ handleLogin }) => {
@@ -41,7 +43,7 @@ const RegistrationForm = ({ handleLogin }) => {
       setError("Passwords don't match");
       return;
     } try {
-      const response = await axios.post("https://backend-service-rjwj.onrender.com/api/register", {
+      const response = await axios.post(`${BASE_URL}/api/register`, {
         username,
         password,
         insuranceCompany,

@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./PriceComparisonForm.css";
+const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
+
 
 //this form is designed to display all selected procedures used in a price comparison
 const SavedComparisons = () => {
@@ -30,7 +32,7 @@ const SavedComparisons = () => {
 
       try {
         const response = await axios.get(
-          "https://backend-service-rjwj.onrender.com/get-comparisons",
+          `${BASE_URL}/api/get-comparisons`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -64,7 +66,7 @@ const SavedComparisons = () => {
 
     try {
       const response = await axios.delete(
-        "https://backend-service-rjwj.onrender.com/delete-all-comparisons",
+       `${BASE_URL}/api/delete-all-comparisons`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
