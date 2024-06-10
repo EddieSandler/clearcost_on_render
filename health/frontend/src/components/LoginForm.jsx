@@ -4,7 +4,7 @@ import { TextField, Button, Typography, Container } from '@mui/material';
 import axios from 'axios';
 import './PriceComparisonForm.css'; // Ensure this CSS file is imported
 // const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
-const BASE_URL="https://backend-service-rjwj.onrender.com/"
+const BASE_URL="https://backend-service-rjwj.onrender.com"
 
 //accepts user input and sends to backend for validation
 const LoginForm = ({ handleLogin }) => {
