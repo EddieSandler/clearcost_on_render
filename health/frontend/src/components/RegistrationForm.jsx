@@ -53,19 +53,32 @@ const RegistrationForm = ({ handleLogin }) => {
         isadmin,
       });
       if (response.status === 200) {
-        const { user, token } = response.data;
-        // Store the JWT token in session storage or local storage
-        sessionStorage.setItem("token", token);
-        // Call handleLogin to navigate to the comparison page
-        handleLogin();
-        // Clear form fields and error state
-        // ...
+        const loginResponse = await axios.post(`${BASE_URL}/api/login`, {
+          username,
+          password,
+        });
+        if (loginResponse.status === 200) {
+          const token = loginResponse.data.token;
+          sessionStorage.setItem("token", token);
+          handleLogin(); // Call handleLogin to navigate to the comparison page
+          setUsername("");
+          setPassword("");
+          setConfirmPassword("");
+          setInsuranceCompany("");
+          setCopayment("");
+          setCoinsurance("");
+          setDeductible("");
+          setError("");
+        } else {
+          setError("Login failed after registration");
+        }
       } else {
         setError("Registration failed");
       }
     } catch (error) {
       setError("Registration failed");
     }
+  };
 
 
   return (
@@ -158,5 +171,5 @@ const RegistrationForm = ({ handleLogin }) => {
     </Container>
   );
 };
-}
+
 export default RegistrationForm;
