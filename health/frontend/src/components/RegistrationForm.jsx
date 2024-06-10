@@ -10,11 +10,11 @@ const RegistrationForm = ({ handleLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [insuranceCompany, setInsuranceCompany] = useState("");
+  const [insurance_company, setInsuranceCompany] = useState("");
   const [copayment, setCopayment] = useState("");
   const [coinsurance, setCoinsurance] = useState("");
   const [deductible, setDeductible] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isadmin, setIsAdmin] = useState(false);
   const [error, setError] = useState("");
 
   // Clear the form fields on component mount
@@ -46,11 +46,11 @@ const RegistrationForm = ({ handleLogin }) => {
       const response = await axios.post(`${BASE_URL}/api/register`, {
         username,
         password,
-        insuranceCompany,
+        insurance_company,
         copayment: copayment || 0,
         coinsurance: coinsurance || 0,
         deductible: deductible || 0,
-        isAdmin,
+        isadmin,
       });
       if (response.status === 200) {
         const { user, token } = response.data;
@@ -109,7 +109,7 @@ const RegistrationForm = ({ handleLogin }) => {
           variant="outlined"
           fullWidth
           margin="normal"
-          value={insuranceCompany}
+          value={insurance_company}
           onChange={(e) => setInsuranceCompany(e.target.value)}
           className="dark-textfield"
         />
@@ -144,7 +144,7 @@ const RegistrationForm = ({ handleLogin }) => {
           <label>
             <input
               type="checkbox"
-              checked={isAdmin}
+              checked={isadmin}
               onChange={handleCheckboxChange}
             />
             Admin

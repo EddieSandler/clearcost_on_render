@@ -27,7 +27,7 @@ const AdminPage = () => {
 
   const handleUpdateProcedure = async () => {
     try {
-      const response = await axios.put(`https://backend-service-rjwj.onrender.com/update-procedure/${procedureId}`, {
+      const response = await axios.put(`https://backend-service-rjwj.onrender.com/api/update-procedure/${procedureId}`, {
         cpt_code: cptCode,
         procedure_name: procedureName
       });
@@ -39,7 +39,7 @@ const AdminPage = () => {
 
   const handleUpdateFacility = async () => {
     try {
-      const response = await axios.put(`https://backend-service-rjwj.onrender.com/update-facility/${facilityId}`, {
+      const response = await axios.put(`https://backend-service-rjwj.onrender.com/api/update-facility/${facilityId}`, {
         facility_name: facilityName
       });
       console.log(response.data);
@@ -50,7 +50,7 @@ const AdminPage = () => {
 
   const handleUpdatePrice = async () => {
     try {
-      const response = await axios.put(`https://backend-service-rjwj.onrender.com/update-price/${pricingId}`, {
+      const response = await axios.put(`https://backend-service-rjwj.onrender.com/api/update-price/${pricingId}`, {
         procedure_id: procedureId,
         facility_id: facilityId,
         price: price
@@ -63,7 +63,7 @@ const AdminPage = () => {
 
   const handleDeleteProcedure = async () => {
     try {
-      const response = await axios.delete(`https://backend-service-rjwj.onrender.com/delete-procedure/${procedureId}`);
+      const response = await axios.delete(`https://backend-service-rjwj.onrender.com/api/delete-procedure/${procedureId}`);
       console.log(response.data);
     } catch (error) {
       console.error('Error deleting procedure:', error);
