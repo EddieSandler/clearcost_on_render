@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Container, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import './PriceComparisonForm.css';
-const BASE_URL=import.meta.env.VITE_APP_BASE_URL||"http://localhost:3001"
+const BASE_URL="https://backend-service-rjwj.onrender.com"||"http://localhost:3001"
 
 
 
