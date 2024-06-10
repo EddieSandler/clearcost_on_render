@@ -30,7 +30,7 @@ const authenticateToken = (req, res, next) => {
 //authentication for Admin users, used for all Admin endpoints
 
 const checkAdmin = (req, res, next) => {
-  if (!req.user.isAdmin) {
+  if (!req.user.isadmin) {
     return res.status(403).send('Admin access required');
   }
   next();
