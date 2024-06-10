@@ -53,123 +53,111 @@ const RegistrationForm = ({ handleLogin }) => {
         isadmin,
       });
       if (response.status === 200) {
-        const loginResponse = await axios.post(`${BASE_URL}/api/login`, {
-          username,
-          password,
-        });
-        if (loginResponse.status === 200) {
-          const token = loginResponse.data.token;
-          sessionStorage.setItem("token", token);
-          handleLogin(); // Call handleLogin to navigate to the comparison page
-          setUsername("");
-          setPassword("");
-          setConfirmPassword("");
-          setInsuranceCompany("");
-          setCopayment("");
-          setCoinsurance("");
-          setDeductible("");
-          setError("");
-        } else {
-          setError("Login failed after registration");
-        }
+        const { user, token } = response.data;
+        // Store the JWT token in session storage or local storage
+        sessionStorage.setItem("token", token);
+        // Call handleLogin to navigate to the comparison page
+        handleLogin();
+        // Clear form fields and error state
+        // ...
       } else {
         setError("Registration failed");
       }
     } catch (error) {
       setError("Registration failed");
     }
-  };
 
 
-  return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Register
-      </Typography>
-      {error && <Typography color="error">{error}</Typography>}
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Username"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="dark-textfield"
-        />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="dark-textfield"
-        />
-        <TextField
-          label="Confirm Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="dark-textfield"
-        />
-        <TextField
-          label="Insurance Company"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={insurance_company}
-          onChange={(e) => setInsuranceCompany(e.target.value)}
-          className="dark-textfield"
-        />
-        <TextField
-          label="Copayment $"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={copayment}
-          onChange={(e) => setCopayment(e.target.value)}
-          className="dark-textfield"
-        />
-        <TextField
-          label="Co-insurance (%)"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={coinsurance}
-          onChange={(e) => setCoinsurance(e.target.value)}
-          className="dark-textfield"
-        />
-        <TextField
-          label="Deductible ($)"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={deductible}
-          onChange={(e) => setDeductible(e.target.value)}
-          className="dark-textfield"
-        />
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={isadmin}
-              onChange={handleCheckboxChange}
-            />
-            Admin
-          </label>
-        </div>
-
-        <Button type="submit" variant="contained" color="primary">
-          Register
-        </Button>
-      </form>
-    </Container>
-  );
+ 
 };
+ return (
+   <Container>
+     <Typography variant="h4" gutterBottom>
+       Register
+     </Typography>
+     {error && <Typography color="error">{error}</Typography>}
+     <form onSubmit={handleSubmit}>
+       <TextField
+         label="Username"
+         variant="outlined"
+         fullWidth
+         margin="normal"
+         value={username}
+         onChange={(e) => setUsername(e.target.value)}
+         className="dark-textfield"
+       />
+       <TextField
+         label="Password"
+         type="password"
+         variant="outlined"
+         fullWidth
+         margin="normal"
+         value={password}
+         onChange={(e) => setPassword(e.target.value)}
+         className="dark-textfield"
+       />
+       <TextField
+         label="Confirm Password"
+         type="password"
+         variant="outlined"
+         fullWidth
+         margin="normal"
+         value={confirmPassword}
+         onChange={(e) => setConfirmPassword(e.target.value)}
+         className="dark-textfield"
+       />
+       <TextField
+         label="Insurance Company"
+         variant="outlined"
+         fullWidth
+         margin="normal"
+         value={insurance_company}
+         onChange={(e) => setInsuranceCompany(e.target.value)}
+         className="dark-textfield"
+       />
+       <TextField
+         label="Copayment $"
+         variant="outlined"
+         fullWidth
+         margin="normal"
+         value={copayment}
+         onChange={(e) => setCopayment(e.target.value)}
+         className="dark-textfield"
+       />
+       <TextField
+         label="Co-insurance (%)"
+         variant="outlined"
+         fullWidth
+         margin="normal"
+         value={coinsurance}
+         onChange={(e) => setCoinsurance(e.target.value)}
+         className="dark-textfield"
+       />
+       <TextField
+         label="Deductible ($)"
+         variant="outlined"
+         fullWidth
+         margin="normal"
+         value={deductible}
+         onChange={(e) => setDeductible(e.target.value)}
+         className="dark-textfield"
+       />
+       <div>
+         <label>
+           <input
+             type="checkbox"
+             checked={isadmin}
+             onChange={handleCheckboxChange}
+           />
+           Admin
+         </label>
+       </div>
 
+       <Button type="submit" variant="contained" color="primary">
+         Register
+       </Button>
+     </form>
+   </Container>
+ );
+}
 export default RegistrationForm;
